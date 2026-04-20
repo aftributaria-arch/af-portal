@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AF Assessoria Tributária Municipal — Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root{
+  --v:#0F6E56;--ve:#085041;--vc:#E1F5EE;--vb:#9FE1CB;
+  --cr:#F6F4EF;--br:#ffffff;
+  --bd:rgba(0,0,0,.08);--bd2:rgba(0,0,0,.15);
+  --gt:#717171;--pt:#181818;
+  --am:#B06C10;--ab:#FDF0DB;
+  --co:#8B3419;--cb:#FAEDE8;
+  --az:#1457A0;--azb:#EAF2FC;
+  --rx:#4A41AA;--rxb:#EEEDFE;
+  --vm:#922828;--vmb:#FBEBEB;
+  --r:10px;--rl:16px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+  --sh2:0 2px 8px rgba(0,0,0,.08),0 12px 40px rgba(0,0,0,.1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cr);color:var(--pt);font-size:14px;line-height:1.5}
+
+/* ══ LOGIN ══ */
+#login-screen{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+@media(max-width:768px){#login-screen{grid-template-columns:1fr}}
+
+.lp-left{
+  background:var(--ve);position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:space-between;padding:52px 56px;
+}
+.lp-left::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 20% 80%,rgba(29,158,117,.3) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(8,80,65,.5) 0%,transparent 50%)}
+.lp-left::after{content:'';position:absolute;top:-120px;right:-120px;width:400px;height:400px;border:1px solid rgba(255,255,255,.07);border-radius:50%}
+.lpl{position:relative;z-index:1}
+.lpl-logo{display:flex;align-items:center;gap:14px;margin-bottom:60px}
+.lpl-mark{width:44px;height:44px;background:rgba(255,255,255,.12);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'DM Serif Display',serif;font-size:19px;border:1px solid rgba(255,255,255,.15)}
+.lpl-brand{color:rgba(255,255,255,.9);font-size:14px;font-weight:500}
+.lpl-brand-s{color:rgba(255,255,255,.45);font-size:11px;margin-top:1px}
+.lpl-h{font-family:'DM Serif Display',serif;font-size:38px;color:#fff;line-height:1.2;margin-bottom:20px;letter-spacing:-.02em}
+.lpl-h em{color:var(--vb);font-style:italic}
+.lpl-desc{color:rgba(255,255,255,.6);font-size:14px;line-height:1.65;max-width:360px}
+.lpl-feats{display:flex;flex-direction:column;gap:12px;margin-top:36px}
+.lpl-feat{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.75);font-size:13px}
+.lpl-dot{width:6px;height:6px;border-radius:50%;background:var(--vb);flex-shrink:0}
+.lpl-footer{position:relative;z-index:1;color:rgba(255,255,255,.3);font-size:11px}
+@media(max-width:768px){.lp-left{display:none}}
+
+.lp-right{background:var(--br);display:flex;align-items:center;justify-content:center;padding:40px 32px}
+.login-box{width:400px;max-width:100%}
+.lb-title{font-size:24px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
+.lb-sub{font-size:13px;color:var(--gt);margin-bottom:32px}
+
+.login-tabs{display:flex;background:var(--cr);border-radius:var(--r);padding:3px;gap:3px;margin-bottom:28px;border:1px solid var(--bd)}
+.lt{flex:1;padding:9px 12px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border-radius:8px;color:var(--gt);transition:all .18s;border:none;background:transparent;font-family:'DM Sans',sans-serif}
+.lt.active{background:var(--br);color:var(--pt);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+
+.fp{display:none}.fp.on{display:block}
+
+.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 16px;border:1.5px solid var(--bd2);border-radius:var(--r);background:var(--br);color:var(--pt);font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;margin-bottom:10px}
+.google-btn:hover{background:var(--cr)}
+.g-ico{width:18px;height:18px;flex-shrink:0}
+
+.login-err{font-size:12px;color:var(--vm);background:var(--vmb);padding:10px 14px;border-radius:var(--r);margin-bottom:12px;display:none;border:1px solid rgba(146,40,40,.12);line-height:1.5}
+.login-ok{font-size:12px;color:var(--v);background:var(--vc);padding:10px 14px;border-radius:var(--r);margin-bottom:12px;display:none;border:1px solid rgba(15,110,86,.2)}
+
+.login-info{background:var(--azb);border:1px solid rgba(20,87,160,.15);border-radius:var(--r);padding:13px 16px;font-size:13px;color:var(--az);line-height:1.55;margin-bottom:20px}
+.login-info strong{font-weight:600;display:block;margin-bottom:3px}
+
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--gt);font-size:12px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+.demo-panel{background:var(--cr);border:1px solid var(--bd);border-radius:var(--r);padding:14px 16px;margin-top:4px}
+.demo-title{font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px}
+.demo-btn{display:flex;align-items:center;gap:10px;width:100%;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--br);color:var(--pt);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;margin-bottom:5px;text-align:left}
+.demo-btn:last-child{margin-bottom:0}
+.demo-btn:hover{background:var(--cr);border-color:var(--bd2)}
+.db-ini{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.db-name{font-weight:600;font-size:12px}
+.db-role{font-size:11px;color:var(--gt);margin-top:1px}
+
+/* ══ APP ══ */
+#app{display:none;min-height:100vh;flex-direction:column}
+.topbar{background:var(--ve);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:90;border-bottom:1px solid rgba(0,0,0,.15)}
+.tb-l{display:flex;align-items:center;gap:12px}
+.tb-mark{width:30px;height:30px;background:rgba(255,255,255,.13);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'DM Serif Display',serif;font-size:14px;border:1px solid rgba(255,255,255,.12)}
+.tb-name{color:#fff;font-size:13px;font-weight:600;letter-spacing:-.01em}
+.tb-sub{color:rgba(255,255,255,.45);font-size:10px;margin-top:1px}
+.tb-r{display:flex;align-items:center;gap:8px}
+.tb-chip{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+.tb-foto{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid rgba(255,255,255,.25);overflow:hidden;flex-shrink:0}
+.tb-foto img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.tb-uname{color:rgba(255,255,255,.85);font-size:12px;font-weight:500}
+.tb-urole{color:rgba(255,255,255,.4);font-size:10px}
+.btn-sair{padding:5px 12px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.6);border-radius:7px;cursor:pointer;font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-sair:hover{background:rgba(255,255,255,.1);color:#fff}
+
+.subnav{background:var(--br);border-bottom:1px solid var(--bd);display:flex;padding:0 24px;overflow-x:auto}
+.sn{padding:11px 16px;font-size:13px;color:var(--gt);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;font-weight:500;transition:color .15s;user-select:none}
+.sn.active{color:var(--v);border-bottom-color:var(--v);font-weight:600}
+.sn:hover:not(.active){color:var(--pt)}
+.content{padding:24px;max-width:1280px;width:100%}
+
+/* ══ MÉTRICAS ══ */
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.met{background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);padding:18px 20px;box-shadow:var(--sh)}
+.met-lbl{font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.met-val{font-size:30px;font-weight:300;font-family:'DM Serif Display',serif;line-height:1;letter-spacing:-.02em}
+.met-sub{font-size:11px;color:var(--gt);margin-top:6px}
+.met.v .met-val{color:var(--v)}.met.a .met-val{color:var(--am)}.met.c .met-val{color:var(--co)}.met.b .met-val{color:var(--az)}
+
+/* ══ TOOLBAR ══ */
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.sb{flex:1;min-width:180px;position:relative}
+.sb input{width:100%;padding:9px 13px 9px 36px;font-size:13px;border:1px solid var(--bd2);border-radius:var(--r);background:var(--br);color:var(--pt);font-family:'DM Sans',sans-serif}
+.sb input:focus{outline:none;border-color:var(--v)}
+.sb-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gt);font-size:14px;pointer-events:none}
+select{padding:9px 13px;font-size:13px;border:1px solid var(--bd2);border-radius:var(--r);background:var(--br);color:var(--pt);cursor:pointer;font-family:'DM Sans',sans-serif}
+select:focus{outline:none;border-color:var(--v)}
+
+/* ══ BOTÕES ══ */
+.btn{padding:9px 18px;font-size:13px;border-radius:var(--r);cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;letter-spacing:-.01em}
+.btn-v{background:var(--v);color:#fff}.btn-v:hover{background:var(--ve)}
+.btn-o{background:var(--br);color:var(--pt);border:1px solid var(--bd2)}.btn-o:hover{background:var(--cr)}
+.btn-az{background:var(--az);color:#fff}.btn-az:hover{background:#0e458a}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:8px}
+.btn-xs{padding:4px 10px;font-size:11px;border-radius:7px}
+
+/* ══ TABELA ══ */
+.tw{background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.07em;background:var(--cr);border-bottom:1px solid var(--bd)}
+td{padding:12px 16px;border-bottom:1px solid var(--bd);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafaf8;cursor:pointer}
+tr.mun-novo td{background:rgba(20,87,160,.02)}
+tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
+
+/* ══ BADGES ══ */
+.bx{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.bx-rec{background:var(--azb);color:var(--az)}
+.bx-ana{background:var(--ab);color:var(--am)}
+.bx-pen{background:var(--vmb);color:var(--vm)}
+.bx-con{background:var(--vc);color:var(--ve)}
+.bx-par{background:var(--rxb);color:var(--rx)}
+.bx-port{background:var(--azb);color:var(--az);font-size:10px;padding:2px 7px}
+.bx-pa{color:#922828;font-size:12px;font-weight:700}
+.bx-pm{color:#B06C10;font-size:12px;font-weight:700}
+.bx-pb{color:#3B6D11;font-size:12px;font-weight:700}
+
+/* ══ MODAL ══ */
+.ovl{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:200;align-items:flex-start;justify-content:center;padding:32px 16px 24px;overflow-y:auto}
+.ovl.open{display:flex}
+.modal{background:var(--br);border-radius:var(--rl);width:720px;max-width:98vw;border:1px solid var(--bd);box-shadow:var(--sh2);animation:mup .2s ease}
+@keyframes mup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.mh{padding:18px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.mh h3{font-size:16px;font-weight:600;letter-spacing:-.01em;line-height:1.4}
+.mh-b{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;align-items:center}
+.mc{background:none;border:none;font-size:24px;cursor:pointer;color:var(--gt);line-height:1;flex-shrink:0;padding:0 2px}
+.mc:hover{color:var(--pt)}
+.mb{padding:20px 24px;max-height:73vh;overflow-y:auto}
+.mf{padding:14px 24px;border-top:1px solid var(--bd);display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+
+/* ══ FORM ══ */
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field label{font-size:11px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.05em}
+.field input,.field select,.field textarea{padding:9px 13px;font-size:13px;border:1px solid var(--bd2);border-radius:var(--r);background:var(--br);color:var(--pt);font-family:'DM Sans',sans-serif}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--v)}
+.field textarea{resize:vertical;min-height:82px;line-height:1.55}
+.sec{font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.07em;margin:18px 0 11px;padding-bottom:7px;border-bottom:1px solid var(--bd)}
+
+/* ══ TABS ══ */
+.tab-bar{display:flex;border-bottom:1px solid var(--bd);margin-bottom:18px;overflow-x:auto}
+.tab{padding:9px 17px;font-size:13px;cursor:pointer;color:var(--gt);border-bottom:2px solid transparent;white-space:nowrap;font-weight:500;user-select:none}
+.tab.active{color:var(--v);border-bottom-color:var(--v);font-weight:600}
+
+/* ══ FLOW ══ */
+.flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:9px}
+.fs{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--bd);color:var(--gt);background:var(--cr)}
+.fs.done{background:var(--vc);color:var(--ve);border-color:rgba(15,110,86,.25)}
+.fs.cur{background:var(--v);color:#fff;border-color:var(--v)}
+
+/* ══ TIMELINE ══ */
+.tl{display:flex;flex-direction:column}
+.tl-i{display:flex;gap:13px;padding-bottom:14px;position:relative}
+.tl-d{width:10px;height:10px;border-radius:50%;background:var(--v);flex-shrink:0;margin-top:4px}
+.tl-l{position:absolute;left:4px;top:14px;bottom:0;width:1px;background:var(--bd)}
+.tl-ev{font-size:13px;font-weight:500}
+.tl-m{font-size:11px;color:var(--gt);margin-top:2px}
+
+/* ══ UPLOAD ══ */
+.drop{border:2px dashed var(--bd2);border-radius:var(--r);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+.drop:hover,.drop.drag{border-color:var(--v);background:rgba(15,110,86,.04)}
+.drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-ico{font-size:28px;margin-bottom:8px}
+.drop-txt{font-size:13px;color:var(--gt);font-weight:500}
+.drop-sub{font-size:11px;color:var(--gt);margin-top:4px;opacity:.75}
+.file-list{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+.fi{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--cr);border-radius:var(--r);border:1px solid var(--bd)}
+.fi-ico{font-size:16px;flex-shrink:0}
+.fi-name{font-size:13px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fi-sz{font-size:11px;color:var(--gt);flex-shrink:0}
+.fi-rm{background:none;border:none;color:var(--gt);cursor:pointer;font-size:18px;padding:0;flex-shrink:0;line-height:1}
+.fi-rm:hover{color:var(--vm)}
+
+/* ══ MENSAGENS ══ */
+.msg-wrap{background:var(--cr);border:1px solid var(--bd);border-radius:var(--r);padding:14px;min-height:120px;max-height:260px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+.msg{padding:9px 13px;border-radius:10px;max-width:82%;font-size:13px;line-height:1.5}
+.msg-out{background:var(--v);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.msg-in{background:var(--br);border:1px solid var(--bd);align-self:flex-start;border-bottom-left-radius:3px}
+.msg-meta{font-size:10px;opacity:.6;margin-top:4px}
+.msg-row{display:flex;gap:8px}
+.msg-row input{flex:1;padding:9px 13px;font-size:13px;border:1px solid var(--bd2);border-radius:var(--r);font-family:'DM Sans',sans-serif;background:var(--br)}
+.msg-row input:focus{outline:none;border-color:var(--v)}
+
+/* ══ PORTAL MUNICÍPIO ══ */
+.mun-hero{background:var(--az);border-radius:var(--rl);padding:30px 36px;margin-bottom:22px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;position:relative;overflow:hidden}
+.mun-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;border:1px solid rgba(255,255,255,.08)}
+.mun-hero::after{content:'';position:absolute;right:60px;bottom:-80px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04)}
+.mh-txt{position:relative;z-index:1}
+.mh-hello{color:rgba(255,255,255,.65);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
+.mh-title{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;margin-bottom:6px;letter-spacing:-.01em}
+.mh-adv{color:rgba(255,255,255,.7);font-size:13px}
+.mh-adv strong{color:#fff;font-weight:600}
+.mh-stats{display:flex;gap:24px;position:relative;z-index:1;flex-shrink:0}
+.mhs{text-align:center}
+.mhs-n{font-family:'DM Serif Display',serif;font-size:26px;color:#fff;line-height:1}
+.mhs-l{font-size:11px;color:rgba(255,255,255,.55);margin-top:4px;font-weight:500}
+
+.pcard{background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);padding:18px 20px;margin-bottom:10px;box-shadow:var(--sh);cursor:pointer;transition:all .18s}
+.pcard:hover{border-color:rgba(20,87,160,.3);box-shadow:0 2px 12px rgba(20,87,160,.1);transform:translateY(-1px)}
+.pc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.pc-num{font-size:11px;font-weight:700;color:var(--az);letter-spacing:.02em}
+.pc-tit{font-size:14px;font-weight:600;margin-top:3px;line-height:1.4;letter-spacing:-.01em}
+.pc-meta{font-size:12px;color:var(--gt);margin-top:4px}
+.pc-btm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px}
+.pc-tag{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--gt)}
+.alerta{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--vmb);color:var(--vm)}
+.pdisp{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;background:var(--rxb);color:var(--rx)}
+
+.info-box{background:var(--vc);border:1px solid rgba(15,110,86,.2);border-radius:var(--r);padding:13px 16px;font-size:13px;color:var(--ve);line-height:1.55;margin-bottom:16px}
+.info-box strong{font-weight:600;display:block;margin-bottom:3px}
+.warn-box{background:var(--vmb);border:1px solid rgba(146,40,40,.15);border-radius:var(--r);padding:13px 16px;font-size:13px;color:var(--vm);margin-bottom:16px}
+
+/* ══ ADV GRID ══ */
+.adv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+.adv-card{background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);padding:16px 18px;box-shadow:var(--sh)}
+.adv-bar{height:4px;background:var(--cr);border-radius:2px;margin-top:10px;overflow:hidden;border:1px solid var(--bd)}
+.adv-bar-f{height:100%;background:var(--v);border-radius:2px}
+.asr{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--bd)}
+.asr:last-of-type{border-bottom:none}
+
+/* ══ NOTIF ══ */
+.notif{position:fixed;bottom:24px;right:24px;padding:13px 18px;border-radius:var(--r);font-size:13px;z-index:999;display:none;box-shadow:0 8px 30px rgba(0,0,0,.18);max-width:380px;font-weight:500;animation:nup .25s ease}
+@keyframes nup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.notif.ok{background:var(--ve);color:#fff}
+.notif.warn{background:var(--am);color:#fff}
+.notif.err{background:var(--vm);color:#fff}
+
+@media(max-width:700px){
+  .mets{grid-template-columns:1fr 1fr}
+  .adv-grid{grid-template-columns:1fr}
+  .fr2{grid-template-columns:1fr}
+  .content{padding:16px}
+  .mun-hero{flex-direction:column}
+  .mh-stats{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen">
+
+  <div class="lp-left">
+    <div class="lpl">
+      <div class="lpl-logo">
+        <div class="lpl-mark">AF</div>
+        <div>
+          <div class="lpl-brand">AF Assessoria Tributária</div>
+          <div class="lpl-brand-s">Municipal · Goiânia/GO</div>
+        </div>
+      </div>
+      <div>
+        <div class="lpl-h">Portal de<br><em>Processos</em><br>Administrativos</div>
+        <div class="lpl-desc">Gestão centralizada de processos tributários municipais com acesso dedicado para o escritório e para os municípios clientes.</div>
+        <div class="lpl-feats">
+          <div class="lpl-feat"><div class="lpl-dot"></div>Envio de processos pelos municípios</div>
+          <div class="lpl-feat"><div class="lpl-dot"></div>Controle de status em tempo real</div>
+          <div class="lpl-feat"><div class="lpl-dot"></div>Comunicação direta por processo</div>
+          <div class="lpl-feat"><div class="lpl-dot"></div>Registro de pareceres e análises</div>
+        </div>
+      </div>
+    </div>
+    <div class="lpl-footer">© 2025 AF Assessoria Tributária Municipal · Todos os direitos reservados</div>
+  </div>
+
+  <div class="lp-right">
+    <div class="login-box">
+      <div class="lb-title">Entrar no portal</div>
+      <div class="lb-sub">Selecione seu tipo de acesso para continuar.</div>
+
+      <div class="login-tabs">
+        <button class="lt active" onclick="setTab('adv',this)">Escritório AF</button>
+        <button class="lt" onclick="setTab('mun',this)">Município cliente</button>
+      </div>
+
+      <div id="login-err" class="login-err"></div>
+      <div id="login-ok" class="login-ok"></div>
+
+      <!-- ADVOGADO -->
+      <div class="fp on" id="panel-adv">
+        <button class="google-btn" onclick="loginGoogle('adv')">
+          <svg class="g-ico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Entrar com Google
+        </button>
+        <div class="divider">acesso de demonstração</div>
+        <div class="demo-panel">
+          <div class="demo-title">Simular acesso — equipe AF</div>
+          <button class="demo-btn" onclick="loginDemo('Jéssyca Karen','jessycakmfsalles13@gmail.com','JK','#E1F5EE','#0F6E56')">
+            <div class="db-ini" style="background:#E1F5EE;color:#0F6E56">JK</div>
+            <div><div class="db-name">Jéssyca Karen</div><div class="db-role">jessycakmfsalles13@gmail.com</div></div>
+          </button>
+          <button class="demo-btn" onclick="loginDemo('Wagner Melo','adv.wagnermelo@gmail.com','WM','#EAF2FC','#1457A0')">
+            <div class="db-ini" style="background:#EAF2FC;color:#1457A0">WM</div>
+            <div><div class="db-name">Wagner Melo</div><div class="db-role">adv.wagnermelo@gmail.com</div></div>
+          </button>
+          <button class="demo-btn" onclick="loginDemo('Danrlley H.','danrlleyh@gmail.com','DH','#EEEDFE','#4A41AA')">
+            <div class="db-ini" style="background:#EEEDFE;color:#4A41AA">DH</div>
+            <div><div class="db-name">Danrlley H.</div><div class="db-role">danrlleyh@gmail.com</div></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- MUNICÍPIO -->
+      <div class="fp" id="panel-mun">
+        <div class="login-info">
+          <strong>Acesso via Gmail da prefeitura</strong>
+          Clique em "Entrar com Google" e use o e-mail institucional cadastrado pelo escritório AF. Se ainda não tiver acesso, entre em contato com o escritório.
+        </div>
+        <button class="google-btn" onclick="loginGoogle('mun')">
+          <svg class="g-ico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Entrar com Google
+        </button>
+        <div class="divider">acesso de demonstração</div>
+        <div class="demo-panel">
+          <div class="demo-title">Simular acesso — município</div>
+          <button class="demo-btn" onclick="loginDemoMun('Goiânia','fazenda@goiania.go.gov.br')">
+            <div class="db-ini" style="background:#EAF2FC;color:#1457A0">GO</div>
+            <div><div class="db-name">Goiânia</div><div class="db-role">fazenda@goiania.go.gov.br</div></div>
+          </button>
+          <button class="demo-btn" onclick="loginDemoMun('Anápolis','fazenda@anapolis.go.gov.br')">
+            <div class="db-ini" style="background:#EAF2FC;color:#1457A0">AN</div>
+            <div><div class="db-name">Anápolis</div><div class="db-role">fazenda@anapolis.go.gov.br</div></div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+  <div class="topbar">
+    <div class="tb-l">
+      <div class="tb-mark">AF</div>
+      <div>
+        <div class="tb-name">AF Assessoria Tributária Municipal</div>
+        <div class="tb-sub" id="tb-sub">Portal de Processos</div>
+      </div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-chip">
+        <div class="tb-foto" id="tb-foto"></div>
+        <div>
+          <div class="tb-uname" id="tb-uname">Usuário</div>
+          <div class="tb-urole" id="tb-urole">Cargo</div>
+        </div>
+        <button class="btn-sair" onclick="logout()">Sair</button>
+      </div>
+    </div>
+  </div>
+  <div class="subnav" id="subnav"></div>
+  <div class="content" id="main"></div>
+</div>
+
+<!-- Modal: Novo processo (advogado) -->
+<div class="ovl" id="m-novo-adv">
+  <div class="modal">
+    <div class="mh"><h3>Cadastrar novo processo</h3><button class="mc" onclick="fm('m-novo-adv')">×</button></div>
+    <div class="mb">
+      <div class="fr2">
+        <div class="field"><label>Número do processo</label><input id="na-num" placeholder="PAT-2025-001"></div>
+        <div class="field"><label>Município</label><select id="na-mun"><option value="">Selecionar...</option><option>Goiânia</option><option>Aparecida de Goiânia</option><option>Anápolis</option><option>Rio Verde</option><option>Itumbiara</option><option>Luziânia</option><option>Catalão</option><option>Jataí</option></select></div>
+      </div>
+      <div class="field"><label>Assunto</label><input id="na-ass" placeholder="Ex: Impugnação ISSQN – Auto de infração nº 1234"></div>
+      <div class="fr2">
+        <div class="field"><label>Tipo</label><select id="na-tipo"><option>Impugnação</option><option>Recurso Administrativo</option><option>Parecer Jurídico</option><option>Consulta Tributária</option><option>Execução Fiscal</option><option>Projeto de Lei</option><option>Decreto</option><option>Instrução Normativa</option></select></div>
+        <div class="field"><label>Tributo</label><select id="na-trib"><option>ISS</option><option>IPTU</option><option>ITBI</option><option>Taxa</option><option>Contribuição de Melhoria</option><option>Dívida Ativa</option><option>Outros</option></select></div>
+      </div>
+      <div class="fr2">
+        <div class="field"><label>Advogado responsável</label><select id="na-adv"></select></div>
+        <div class="field"><label>Prioridade</label><select id="na-prio"><option>Média</option><option>Alta</option><option>Baixa</option></select></div>
+      </div>
+      <div class="fr2">
+        <div class="field"><label>Data de recebimento</label><input type="date" id="na-data"></div>
+        <div class="field"><label>Prazo</label><input type="date" id="na-prazo"></div>
+      </div>
+      <div class="field"><label>Valor em discussão (R$)</label><input id="na-valor" placeholder="Ex: 48.000,00"></div>
+      <div class="field"><label>Observações internas</label><textarea id="na-obs" placeholder="Contexto, histórico, notas..."></textarea></div>
+      <div class="sec">Documentos</div>
+      <div class="drop"><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="addArqs(this.files,'adv')">
+        <div class="drop-ico">📁</div><div class="drop-txt">Arraste ou clique para selecionar</div>
+        <div class="drop-sub">PDF, Word (.docx), imagens (JPG, PNG)</div>
+      </div>
+      <div class="file-list" id="fl-adv"></div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="fm('m-novo-adv')">Cancelar</button><button class="btn btn-v" onclick="salvarAdv()">Salvar processo</button></div>
+  </div>
+</div>
+
+<!-- Modal: Enviar processo (município) -->
+<div class="ovl" id="m-novo-mun">
+  <div class="modal">
+    <div class="mh"><h3>Enviar processo ao escritório AF</h3><button class="mc" onclick="fm('m-novo-mun')">×</button></div>
+    <div class="mb">
+      <div class="info-box"><strong>Como funciona</strong>Preencha e anexe os documentos. O escritório receberá, analisará e elaborará o parecer. Acompanhe o status aqui no portal.</div>
+      <div class="field"><label>Assunto / Descrição</label><input id="mn-ass" placeholder="Ex: Impugnação ISSQN – Auto de infração nº 1234"></div>
+      <div class="fr2">
+        <div class="field"><label>Tipo</label><select id="mn-tipo"><option>Impugnação</option><option>Recurso Administrativo</option><option>Solicitação de Parecer</option><option>Consulta Tributária</option><option>Execução Fiscal</option><option>Projeto de Lei</option><option>Outro</option></select></div>
+        <div class="field"><label>Tributo</label><select id="mn-trib"><option>ISS</option><option>IPTU</option><option>ITBI</option><option>Taxa</option><option>Contribuição de Melhoria</option><option>Dívida Ativa</option><option>Outros</option></select></div>
+      </div>
+      <div class="fr2">
+        <div class="field"><label>Valor em discussão (R$)</label><input id="mn-valor" placeholder="Ex: 48.000,00"></div>
+        <div class="field"><label>Urgência</label><select id="mn-urg"><option>Normal</option><option>Urgente</option><option>Muito urgente</option></select></div>
+      </div>
+      <div class="field"><label>Descrição detalhada</label><textarea id="mn-desc" placeholder="Contexto, histórico, prazos legais relevantes..."></textarea></div>
+      <div class="sec">Documentos do processo</div>
+      <div class="drop"><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="addArqs(this.files,'mun')">
+        <div class="drop-ico">📎</div><div class="drop-txt">Anexe os documentos do processo</div>
+        <div class="drop-sub">Auto de infração, notificação, petição — PDF, Word ou imagens</div>
+      </div>
+      <div class="file-list" id="fl-mun"></div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="fm('m-novo-mun')">Cancelar</button><button class="btn btn-az" onclick="salvarMun()">Enviar ao escritório</button></div>
+  </div>
+</div>
+
+<!-- Modal: Detalhe (advogado) -->
+<div class="ovl" id="m-det-adv">
+  <div class="modal">
+    <div class="mh">
+      <div style="flex:1;min-width:0">
+        <h3 id="da-tit" style="white-space:normal"></h3>
+        <div class="mh-b" id="da-badges"></div>
+        <div class="flow" id="da-flow"></div>
+      </div>
+      <button class="mc" onclick="fm('m-det-adv')">×</button>
+    </div>
+    <div class="mb">
+      <div class="tab-bar">
+        <div class="tab active" onclick="aba(this,'da-info')">Informações</div>
+        <div class="tab" onclick="aba(this,'da-parecer')">Parecer</div>
+        <div class="tab" onclick="aba(this,'da-docs')">Documentos</div>
+        <div class="tab" onclick="aba(this,'da-hist')">Histórico</div>
+        <div class="tab" onclick="aba(this,'da-msg')">Mensagens</div>
+      </div>
+      <div id="da-info"></div>
+      <div id="da-parecer" style="display:none"></div>
+      <div id="da-docs" style="display:none"></div>
+      <div id="da-hist" style="display:none"></div>
+      <div id="da-msg" style="display:none"></div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="fm('m-det-adv')">Fechar</button>
+      <button class="btn btn-v" id="btn-av" onclick="avancar()">Avançar status</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detalhe (município) -->
+<div class="ovl" id="m-det-mun">
+  <div class="modal">
+    <div class="mh">
+      <div style="flex:1;min-width:0">
+        <h3 id="dm-tit" style="white-space:normal"></h3>
+        <div class="mh-b" id="dm-badges"></div>
+        <div class="flow" id="dm-flow"></div>
+      </div>
+      <button class="mc" onclick="fm('m-det-mun')">×</button>
+    </div>
+    <div class="mb">
+      <div class="tab-bar">
+        <div class="tab active" onclick="aba(this,'dm-info')">Detalhes</div>
+        <div class="tab" onclick="aba(this,'dm-docs')">Documentos</div>
+        <div class="tab" onclick="aba(this,'dm-msg')">Mensagens</div>
+      </div>
+      <div id="dm-info"></div>
+      <div id="dm-docs" style="display:none"></div>
+      <div id="dm-msg" style="display:none"></div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="fm('m-det-mun')">Fechar</button></div>
+  </div>
+</div>
+
+<!-- Modal: Cadastrar município -->
+<div class="ovl" id="m-cad-mun">
+  <div class="modal" style="max-width:480px">
+    <div class="mh"><h3>Cadastrar município cliente</h3><button class="mc" onclick="fm('m-cad-mun')">×</button></div>
+    <div class="mb">
+      <div class="info-box"><strong>Acesso via Google</strong>O município entrará com o Gmail da prefeitura. Cadastre o e-mail exato que eles usarão.</div>
+      <div class="field"><label>Nome do município</label><input id="cm-nome" placeholder="Ex: Catalão"></div>
+      <div class="field"><label>Gmail da prefeitura</label><input type="email" id="cm-email" placeholder="fazenda@catalao.go.gov.br"></div>
+      <div class="field"><label>Advogado responsável</label><select id="cm-adv"></select></div>
+    </div>
+    <div class="mf"><button class="btn btn-o" onclick="fm('m-cad-mun')">Cancelar</button><button class="btn btn-v" onclick="salvarCadMun()">Cadastrar</button></div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ══════════════════════════════════════════
+// EQUIPE DO ESCRITÓRIO — e-mails autorizados
+// ══════════════════════════════════════════
+const EQUIPE = [
+  {nome:'Anna Karolynne', email:'karolmfreire@gmail.com',       ini:'AK', cor:'#E1F5EE', ct:'#0F6E56', role:'owner'},
+  {nome:'Daniella',       email:'daniellapimentaadv@gmail.com', ini:'DP', cor:'#EAF2FC', ct:'#1457A0', role:'admin'},
+  {nome:'Jéssyca Karen',  email:'jessycakmfsalles13@gmail.com', ini:'JK', cor:'#EEEDFE', ct:'#4A41AA', role:'adv'},
+  {nome:'Wagner Melo',    email:'adv.wagnermelo@gmail.com',     ini:'WM', cor:'#FDF0DB', ct:'#B06C10', role:'adv'},
+  {nome:'Danrlley',       email:'danrlleyh@gmail.com',          ini:'DH', cor:'#FAEDE8', ct:'#8B3419', role:'adv'},
+  {nome:'Renata',         email:'re.deus1976@gmail.com',        ini:'RE', cor:'#FBEBEB', ct:'#922828', role:'adv'},
+  {nome:'Roger',          email:'rogerduranalves@gmail.com',    ini:'RO', cor:'#E1F5EE', ct:'#085041', role:'adv'},
+  {nome:'Jéssica',        email:'jessicaamoraes94@gmail.com',   ini:'JA', cor:'#EAF2FC', ct:'#1457A0', role:'adv'},
+];
+
+// ══════════════════════════════════════════
+// MUNICÍPIOS — adicione os e-mails quando tiver
+// ══════════════════════════════════════════
+let MUNICIPIOS = [
+  {nome:'Abadiânia',            email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'Acreúna',              email:'', adv:'Danrlley',     iss:'Jéssica',         contrato:'AF',  obs:'Assessoria: Danrlley (Ass) e Roger (Post)'},
+  {nome:'Águas Lindas',         email:'', adv:'Wagner Melo',  iss:'Jéssica / Jéssyca Karen', contrato:'AF'},
+  {nome:'Alto Horizonte',       email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'Alto Paraíso',         email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
+  {nome:'Aragoiânia',           email:'', adv:'Danrlley',     iss:'Jéssica',         contrato:'AF'},
+  {nome:'Caldazinha',           email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
+  {nome:'Cavalcante',           email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
+  {nome:'Ceres',                email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'Cristianópolis',       email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
+  {nome:'Goiatuba',             email:'', adv:'Roger',        iss:'Jéssica',         contrato:'AF'},
+  {nome:'Guapó',                email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
+  {nome:'Jussara',              email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'FN'},
+  {nome:'Mambaí',               email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'FN'},
+  {nome:'Nova Crixás',          email:'', adv:'Roger',        iss:'Jéssica',         contrato:'AF'},
+  {nome:'Nova Roma',            email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
+  {nome:'Nova Veneza',          email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'INTEGRA'},
+  {nome:'Palmeiras de Goiás',   email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
+  {nome:'Pires do Rio',         email:'', adv:'Danrlley',     iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'Planaltina',           email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'FN'},
+  {nome:'SAB',                  email:'', adv:'Roger',        iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'SAD - Planejamento',   email:'', adv:'Wagner Melo',  iss:'',                contrato:'FN'},
+  {nome:'Santa Tereza',         email:'', adv:'Roger',        iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'São Domingos',         email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'FN'},
+  {nome:'São João d'Aliança',  email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'São Luiz do Norte',    email:'', adv:'Danrlley',     iss:'Jéssyca Karen',  contrato:'FN'},
+  {nome:'Varjão',               email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
+];
+
+const STATUS = ['Recebido','Em análise','Pendente','Parecer emitido','Concluído'];
+
+let processos = [];
+
+let usuario=null, tipoUsr=null, viewAtual='', pDet=null, filsAdv=[], filsMun=[];
+let filtros={busca:'',status:'',municipio:'',adv:''};
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+function setTab(tipo,el){
+  document.querySelectorAll('.lt').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));
+  document.getElementById('panel-'+tipo).classList.add('on');
+  ocultarErro();
+}
+
+const CLIENT_ID = '89123681725-jn3c7d271cqvicjsnuud4buhbabjpm7d.apps.googleusercontent.com';
+
+function loginGoogle(ctx){
+  sessionStorage.setItem('af_login_ctx', ctx);
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: window.location.origin + window.location.pathname,
+    response_type: 'token id_token',
+    scope: 'openid email profile',
+    nonce: Math.random().toString(36).substring(2),
+    prompt: 'select_account'
+  });
+  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
+}
+
+function checkGoogleCallback(){
+  const hash = window.location.hash.substring(1);
+  if(!hash) return;
+  const params = new URLSearchParams(hash);
+  const idToken = params.get('id_token');
+  if(!idToken) return;
+  window.location.hash = '';
+  try {
+    const p = JSON.parse(atob(idToken.split('.')[1]));
+    const email = p.email.toLowerCase();
+    const foto = p.picture;
+    const ctx = sessionStorage.getItem('af_login_ctx')||'adv';
+    sessionStorage.removeItem('af_login_ctx');
+    if(ctx==='adv'){
+      const a = EQUIPE.find(x=>x.email===email);
+      if(!a){mostrarErro('E-mail não autorizado: '+email+'. Solicite acesso ao escritório AF.');return;}
+      usuario={...a,foto};tipoUsr='adv';boot();
+    } else {
+      const m = MUNICIPIOS.find(x=>x.email===email);
+      if(!m){mostrarErro('E-mail não cadastrado: '+email+'. Solicite acesso ao escritório AF.');return;}
+      usuario={nome:m.nome,email,tipo:'municipio',ini:m.nome.substring(0,2).toUpperCase(),advResponsavel:m.adv,foto};
+      tipoUsr='municipio';boot();
+    }
+  } catch(e){ mostrarErro('Erro ao processar login. Tente novamente.'); }
+}
+
+window.addEventListener('load', checkGoogleCallback);
+
+function loginDemo(nome,email,ini,cor,ct){
+  usuario={nome,email,ini,cor,ct,role:'adv',foto:null};tipoUsr='adv';boot();
+}
+function loginDemoMun(nome,email){
+  const m=MUNICIPIOS.find(x=>x.nome===nome)||{adv:'Jéssyca Karen'};
+  usuario={nome,email,tipo:'municipio',ini:nome.substring(0,2).toUpperCase(),advResponsavel:m.adv,foto:null};
+  tipoUsr='municipio';boot();
+}
+function logout(){usuario=null;tipoUsr=null;document.getElementById('login-screen').style.display='grid';document.getElementById('app').style.display='none';}
+
+function mostrarErro(msg){const e=document.getElementById('login-err');e.textContent=msg;e.style.display='block';document.getElementById('login-ok').style.display='none'}
+function mostrarOk(msg){const e=document.getElementById('login-ok');e.textContent=msg;e.style.display='block';document.getElementById('login-err').style.display='none'}
+function ocultarErro(){document.getElementById('login-err').style.display='none';document.getElementById('login-ok').style.display='none'}
+
+function boot(){
+  document.getElementById('login-screen').style.display='none';
+  const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';app.style.minHeight='100vh';
+  const foto=document.getElementById('tb-foto');
+  if(usuario.foto){foto.innerHTML=`<img src="${usuario.foto}">`;}
+  else{foto.style.background=usuario.cor||'var(--azb)';foto.style.color=usuario.ct||'var(--az)';foto.textContent=usuario.ini;}
+  document.getElementById('tb-uname').textContent=usuario.nome;
+  const _r=EQUIPE.find(x=>x.nome===usuario.nome)?.role;
+  document.getElementById('tb-urole').textContent=tipoUsr==='adv'?(_r==='owner'?'Sócia · Proprietária':_r==='admin'?'Administradora':'Advogado(a)'):'Município cliente';
+  document.getElementById('tb-sub').textContent=tipoUsr==='adv'?'Painel do escritório':'Portal do município';
+  const nav=document.getElementById('subnav');
+  if(tipoUsr==='adv'){
+    const _role=EQUIPE.find(x=>x.nome===usuario.nome)?.role;
+    nav.innerHTML=`
+      <div class="sn active" onclick="sv('todos',this)">Todos os processos</div>
+      <div class="sn" onclick="sv('meus',this)">Meus processos</div>
+      <div class="sn" onclick="sv('advogados',this)">Equipe</div>
+      <div class="sn" onclick="sv('municipios-v',this)">Municípios</div>
+      ${_role==='owner'||_role==='admin'?`<div class="sn" onclick="sv('config',this)">Configurações</div>`:''}`;
+    document.getElementById('na-data').value=new Date().toISOString().split('T')[0];
+    document.getElementById('na-adv').innerHTML=EQUIPE.map(a=>`<option${a.nome===usuario.nome?' selected':''}>${a.nome}</option>`).join('');
+    document.getElementById('cm-adv').innerHTML=EQUIPE.map(a=>`<option>${a.nome}</option>`).join('');
+    sv('todos',nav.querySelector('.sn'));
+  } else {
+    nav.innerHTML=`
+      <div class="sn active" onclick="sv('mun-proc',this)">Meus processos</div>
+      <div class="sn" onclick="sv('mun-enviar',this)">Enviar processo</div>`;
+    sv('mun-proc',nav.querySelector('.sn'));
+  }
+}
+
+function sv(v,el){
+  viewAtual=v;
+  if(el){document.querySelectorAll('.sn').forEach(n=>n.classList.remove('active'));el.classList.add('active');}
+  if(v==='mun-enviar'){document.getElementById('m-novo-mun').classList.add('open');sv('mun-proc',document.querySelector('.sn'));return;}
+  renderMain();
+}
+
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+function renderMain(){
+  const c=document.getElementById('main');
+  if(viewAtual==='todos') rProc(c,processos);
+  else if(viewAtual==='meus') rProc(c,processos.filter(p=>p.adv===usuario.nome));
+  else if(viewAtual==='advogados') rEquipe(c);
+  else if(viewAtual==='municipios-v') rMunicipios(c);
+  else if(viewAtual==='config') rConfig(c);
+  else if(viewAtual==='mun-proc') rPortal(c);
+}
+
+function rProc(c,base){
+  let lista=base.filter(p=>{
+    const b=filtros.busca.toLowerCase();
+    if(b&&!p.num.toLowerCase().includes(b)&&!p.assunto.toLowerCase().includes(b)&&!p.municipio.toLowerCase().includes(b)) return false;
+    if(filtros.status&&p.status!==filtros.status) return false;
+    if(filtros.municipio&&p.municipio!==filtros.municipio) return false;
+    if(viewAtual==='todos'&&filtros.adv&&p.adv!==filtros.adv) return false;
+    return true;
+  });
+  const total=base.length,analise=base.filter(p=>p.status==='Em análise').length,
+    pend=base.filter(p=>p.status==='Pendente').length,
+    concl=base.filter(p=>['Concluído','Parecer emitido'].includes(p.status)).length;
+  const novos=processos.filter(p=>p.origem==='municipio'&&p.status==='Recebido');
+  const munis=[...new Set(processos.map(p=>p.municipio))];
+  c.innerHTML=`
+  ${novos.length&&viewAtual==='todos'?`<div style="background:var(--azb);border:1px solid rgba(20,87,160,.18);border-radius:var(--rl);padding:14px 20px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span style="font-size:20px">📬</span>
+    <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--az)">${novos.length} novo(s) processo(s) enviado(s) pelos municípios</div>
+    <div style="font-size:12px;color:var(--az);opacity:.75;margin-top:2px">${novos.map(p=>p.municipio+' — '+p.assunto.substring(0,45)).join(' · ')}</div></div>
+    <button class="btn btn-o btn-sm" onclick="filtros.status='Recebido';filtros.adv='';filtros.municipio='';renderMain()">Ver recebidos</button>
+  </div>`:''}
+  <div class="mets">
+    <div class="met b"><div class="met-lbl">Total</div><div class="met-val">${total}</div><div class="met-sub">${base.filter(p=>p.status==='Recebido').length} aguardando triagem</div></div>
+    <div class="met a"><div class="met-lbl">Em análise</div><div class="met-val">${analise}</div><div class="met-sub">em andamento</div></div>
+    <div class="met c"><div class="met-lbl">Pendentes</div><div class="met-val">${pend}</div><div class="met-sub">aguardando</div></div>
+    <div class="met v"><div class="met-lbl">Finalizados</div><div class="met-val">${concl}</div><div class="met-sub">parecer + concluídos</div></div>
+  </div>
+  <div class="toolbar">
+    <div class="sb"><span class="sb-ico">⌕</span><input placeholder="Buscar número, assunto, município..." value="${filtros.busca}" oninput="filtros.busca=this.value;renderMain()"></div>
+    <select onchange="filtros.status=this.value;renderMain()">${['','Recebido','Em análise','Pendente','Parecer emitido','Concluído'].map(s=>`<option value="${s}"${filtros.status===s?' selected':''}>${s||'Todos os status'}</option>`).join('')}</select>
+    <select onchange="filtros.municipio=this.value;renderMain()"><option value="">Todos os municípios</option>${munis.map(m=>`<option${filtros.municipio===m?' selected':''}>${m}</option>`).join('')}</select>
+    ${viewAtual==='todos'?`<select onchange="filtros.adv=this.value;renderMain()"><option value="">Toda a equipe</option>${EQUIPE.map(a=>`<option${filtros.adv===a.nome?' selected':''}>${a.nome}</option>`).join('')}</select>`:''}
+    <button class="btn btn-v" onclick="abrirNovoAdv()">+ Novo processo</button>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th style="width:100px">Número</th><th style="width:110px">Município</th><th>Assunto</th><th style="width:68px">Tributo</th><th style="width:120px">Advogado</th><th style="width:72px">Prioridade</th><th style="width:112px">Status</th><th style="width:82px">Prazo</th></tr></thead>
+    <tbody>${lista.length?lista.map(p=>`<tr class="${p.origem==='municipio'&&p.status==='Recebido'?'mun-novo':''}" onclick="abrirDetAdv(${p.id})">
+      <td><span style="font-weight:700;color:var(--az)">${p.num}</span>${p.origem==='municipio'?`<span class="bx bx-port" style="margin-left:5px">portal</span>`:''}</td>
+      <td>${p.municipio}</td><td title="${p.assunto}">${p.assunto}</td><td>${p.tributo}</td>
+      <td>${avt(p.adv)}</td><td>${prib(p.prio)}</td><td>${bst(p.status)}</td>
+      <td style="font-size:12px;color:var(--gt)">${p.prazo||'—'}</td>
+    </tr>`).join(''):`<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gt)">Nenhum processo encontrado.</td></tr>`}
+    </tbody>
+  </table></div>`;
+}
+
+function rEquipe(c){
+  c.innerHTML=`<div style="margin-bottom:18px"><h2 style="font-size:17px;font-weight:600;letter-spacing:-.01em">Equipe do escritório AF</h2><p style="font-size:13px;color:var(--gt);margin-top:4px">Distribuição e desempenho por advogado</p></div>
+  <div class="adv-grid">${EQUIPE.map(a=>{
+    const meus=processos.filter(p=>p.adv===a.nome);
+    const concl=meus.filter(p=>['Concluído','Parecer emitido'].includes(p.status)).length;
+    const pct=meus.length?Math.round(concl/meus.length*100):0;
+    const eu=usuario.nome===a.nome;
+    return`<div class="adv-card"${eu?` style="border-color:var(--v);border-width:2px"`:''}>
+      ${eu?`<div style="font-size:10px;font-weight:700;color:var(--v);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em">● Você</div>`:''}
+      <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">
+        <div style="width:42px;height:42px;border-radius:50%;background:${a.cor};color:${a.ct};font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${a.ini}</div>
+        <div><div style="font-size:14px;font-weight:600;letter-spacing:-.01em">${a.nome}</div><div style="font-size:11px;color:var(--gt);margin-top:2px">${a.email}</div></div>
+      </div>
+      ${[['Total',meus.length,''],['Em análise',meus.filter(p=>p.status==='Em análise').length,''],['Pendentes',meus.filter(p=>p.status==='Pendente').length,''],['Finalizados',concl,'color:var(--v);font-weight:700']].map(([l,v,st])=>`<div class="asr"><span style="color:var(--gt)">${l}</span><span style="${st}">${v}</span></div>`).join('')}
+      <div class="adv-bar"><div class="adv-bar-f" style="width:${pct}%"></div></div>
+      <div style="font-size:11px;color:var(--gt);margin-top:6px">${pct}% de conclusão</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function rMunicipios(c){
+  const _role=EQUIPE.find(x=>x.nome===usuario.nome)?.role;
+  c.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px">
+    <div><h2 style="font-size:17px;font-weight:600;letter-spacing:-.01em">Municípios atendidos</h2><p style="font-size:13px;color:var(--gt);margin-top:4px">${MUNICIPIOS.length} municípios · acesso via Gmail da prefeitura</p></div>
+    ${_role==='owner'||_role==='admin'?`<button class="btn btn-v" onclick="abrirCadMun()">+ Cadastrar município</button>`:''}
+  </div>
+  <div class="tw"><table>
+    <thead><tr>
+      <th style="width:50px">#</th>
+      <th>Município</th>
+      <th style="width:60px">Contrato</th>
+      <th style="width:130px">Assessoria</th>
+      <th style="width:130px">ISS</th>
+      <th style="width:80px">Processos</th>
+      <th style="width:80px">Em aberto</th>
+      <th style="width:80px">Concluído</th>
+    </tr></thead>
+    <tbody>${MUNICIPIOS.map((m,i)=>{
+      const ps=processos.filter(p=>p.municipio===m.nome);
+      const concl=ps.filter(p=>['Concluído','Parecer emitido'].includes(p.status)).length;
+      const aberto=ps.filter(p=>!['Concluído','Parecer emitido'].includes(p.status)).length;
+      const badge=m.contrato==='AF'?'background:#E1F5EE;color:#085041':m.contrato==='FN'?'background:#EAF2FC;color:#1457A0':'background:#EEEDFE;color:#4A41AA';
+      return\`<tr onclick="filtros.municipio='\${m.nome}';sv('todos',null)">
+        <td style="color:var(--gt);font-size:12px">\${i+1}</td>
+        <td><span style="font-weight:600">\${m.nome}</span>\${m.obs?'<div style="font-size:11px;color:var(--gt);margin-top:2px">'+m.obs+'</div>':''}</td>
+        <td><span style="display:inline-flex;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;\${badge}">\${m.contrato||'—'}</span></td>
+        <td>\${avt(m.adv)}</td>
+        <td style="font-size:12px">\${m.iss||'—'}</td>
+        <td style="text-align:center">\${ps.length}</td>
+        <td style="text-align:center;color:\${aberto>0?'var(--am)':'var(--gt)'}">\${aberto}</td>
+        <td style="text-align:center;color:var(--v);font-weight:700">\${concl}</td>
+      </tr>\`;
+    }).join('')}</tbody>
+  </table></div>`;
+}
+
+function rConfig(c){
+  c.innerHTML=`<div style="margin-bottom:18px"><h2 style="font-size:17px;font-weight:600;letter-spacing:-.01em">Configurações</h2></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+    <div style="background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);padding:20px;box-shadow:var(--sh)">
+      <div style="font-size:14px;font-weight:600;margin-bottom:4px">Municípios</div>
+      <div style="font-size:13px;color:var(--gt);margin-bottom:14px">${MUNICIPIOS.length} municípios cadastrados</div>
+      <button class="btn btn-v btn-sm" onclick="abrirCadMun()">+ Cadastrar município</button>
+    </div>
+    <div style="background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);padding:20px;box-shadow:var(--sh)">
+      <div style="font-size:14px;font-weight:600;margin-bottom:4px">Ativar Google OAuth</div>
+      <div style="font-size:13px;color:var(--gt);margin-bottom:14px">Necessário para login real com Google</div>
+      <button class="btn btn-o btn-sm" onclick="notif('Consulte as instruções enviadas pelo escritório.','ok')">Ver instruções</button>
+    </div>
+  </div>
+  <div style="background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);padding:20px;box-shadow:var(--sh)">
+    <div style="font-size:14px;font-weight:600;margin-bottom:14px">Equipe autorizada — e-mails Google</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr>${['Nome','Gmail autorizado','Função'].map(h=>`<th style="text-align:left;padding:8px 12px;border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;background:var(--cr)">${h}</th>`).join('')}</tr></thead>
+      <tbody>${EQUIPE.map(a=>`<tr>
+        <td style="padding:9px 12px;border-bottom:1px solid var(--bd)">${avt(a.nome)}</td>
+        <td style="padding:9px 12px;border-bottom:1px solid var(--bd);font-size:12px;color:var(--gt)">${a.email}</td>
+        <td style="padding:9px 12px;border-bottom:1px solid var(--bd);font-size:12px">${a.role==='owner'?'<span style="color:var(--v);font-weight:700">Sócia · Proprietária</span>':a.role==='admin'?'<span style="color:var(--az);font-weight:600">Administradora</span>':'Advogado(a)'}</td>
+      </tr>`).join('')}</tbody>
+    </table>
+  </div>`;
+}
+
+function rPortal(c){
+  const meus=processos.filter(p=>p.municipio===usuario.nome);
+  const ana=meus.filter(p=>p.status==='Em análise').length,
+    pen=meus.filter(p=>p.status==='Pendente').length,
+    concl=meus.filter(p=>['Concluído','Parecer emitido'].includes(p.status)).length;
+  c.innerHTML=`
+  <div class="mun-hero">
+    <div class="mh-txt">
+      <div class="mh-hello">Portal do município</div>
+      <div class="mh-title">${usuario.nome}</div>
+      <div class="mh-adv">Advogado responsável: <strong>${usuario.advResponsavel||'a definir'}</strong></div>
+    </div>
+    <div class="mh-stats">
+      <div class="mhs"><div class="mhs-n">${meus.length}</div><div class="mhs-l">Total</div></div>
+      <div class="mhs"><div class="mhs-n">${ana}</div><div class="mhs-l">Em análise</div></div>
+      <div class="mhs"><div class="mhs-n">${pen}</div><div class="mhs-l">Pendentes</div></div>
+      <div class="mhs"><div class="mhs-n" style="color:#9FE1CB">${concl}</div><div class="mhs-l">Finalizados</div></div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+    <h3 style="font-size:15px;font-weight:600;letter-spacing:-.01em">Meus processos</h3>
+    <button class="btn btn-az" onclick="document.getElementById('m-novo-mun').classList.add('open')">+ Enviar novo processo</button>
+  </div>
+  ${meus.length?meus.map(p=>`
+  <div class="pcard" onclick="abrirDetMun(${p.id})">
+    <div class="pc-top">
+      <div><div class="pc-num">${p.num}</div><div class="pc-tit">${p.assunto}</div><div class="pc-meta">${p.tipo} · ${p.tributo} · Enviado em ${p.data}</div></div>
+      <div style="text-align:right;flex-shrink:0">${bst(p.status)}${p.prazo?`<div style="font-size:11px;color:var(--gt);margin-top:6px">Prazo: ${p.prazo}</div>`:''}</div>
+    </div>
+    <div class="pc-btm">
+      ${p.msgs.length?`<span class="pc-tag">💬 ${p.msgs.length} mensagem(ns)</span>`:''}
+      ${p.docs.length?`<span class="pc-tag">📎 ${p.docs.length} doc(s)</span>`:''}
+      ${p.status==='Pendente'?`<span class="alerta">⚠ Ação necessária</span>`:''}
+      ${p.status==='Parecer emitido'?`<span class="pdisp">✓ Parecer disponível</span>`:''}
+    </div>
+  </div>`).join(''):`
+  <div style="text-align:center;padding:56px 20px;background:var(--br);border:1px solid var(--bd);border-radius:var(--rl);box-shadow:var(--sh)">
+    <div style="font-size:36px;margin-bottom:14px">📂</div>
+    <div style="font-size:15px;font-weight:600;margin-bottom:6px">Nenhum processo enviado ainda</div>
+    <div style="font-size:13px;color:var(--gt);margin-bottom:20px">Clique abaixo para enviar o primeiro processo.</div>
+    <button class="btn btn-az" onclick="document.getElementById('m-novo-mun').classList.add('open')">+ Enviar primeiro processo</button>
+  </div>`}`;
+}
+
+// ══════════════════════════════════════════
+// MODAIS
+// ══════════════════════════════════════════
+function abrirDetAdv(id){
+  const p=processos.find(x=>x.id===id);if(!p)return;pDet=p;
+  document.getElementById('da-tit').textContent=p.num+' — '+p.assunto;
+  document.getElementById('da-badges').innerHTML=bst(p.status)+' '+prib(p.prio)+(p.origem==='municipio'?` <span class="bx bx-port">portal</span>`:'')+`<span style="font-size:11px;color:var(--gt);margin-left:6px">· ${p.municipio} · ${p.tipo}</span>`;
+  const idx=STATUS.indexOf(p.status);
+  document.getElementById('da-flow').innerHTML=STATUS.map((s,i)=>`${i>0?'<span style="color:var(--gt);font-size:10px;margin:0 2px">›</span>':''}<span class="fs ${i<idx?'done':i===idx?'cur':''}">${s}</span>`).join('');
+  const btn=document.getElementById('btn-av');
+  btn.style.display=idx<STATUS.length-1?'':'none';
+  if(idx<STATUS.length-1) btn.textContent='Avançar: '+STATUS[idx+1];
+  rdaInfo();rdaParecer();rdaDocs();rdaHist();rdaMsg();
+  resetAbas('m-det-adv',['da-info','da-parecer','da-docs','da-hist','da-msg']);
+  document.getElementById('m-det-adv').classList.add('open');
+}
+
+function rdaInfo(){const p=pDet;document.getElementById('da-info').innerHTML=`
+  <div class="fr2"><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Município</p><p style="font-size:14px;font-weight:600">${p.municipio}</p></div><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Tipo</p><p style="font-size:14px">${p.tipo}</p></div></div>
+  <div class="fr2" style="margin-top:10px"><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Tributo</p><p style="font-size:14px">${p.tributo}</p></div><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Valor em discussão</p><p style="font-size:15px;font-weight:700;color:var(--v)">${p.valor&&p.valor!=='—'?'R$ '+p.valor:'Não informado'}</p></div></div>
+  <div class="fr2" style="margin-top:10px"><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Advogado responsável</p><p style="font-size:14px">${avt(p.adv)}</p></div><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Prazo</p><p style="font-size:14px;font-weight:600">${p.prazo||'Não definido'}</p></div></div>
+  ${p.obs?`<div style="margin-top:14px;padding:13px 16px;background:var(--cr);border-radius:var(--r);border:1px solid var(--bd)"><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Observações internas</p><p style="font-size:13px;line-height:1.55">${p.obs}</p></div>`:''}
+  <div style="margin-top:16px"><div class="field" style="margin-bottom:0"><label>Reatribuir advogado</label>
+    <select onchange="pDet.adv=this.value;pDet.hist.push({ev:'Reatribuído: '+this.value,d:hj(),u:usuario.nome});notif('Advogado atualizado.','ok')">${EQUIPE.map(a=>`<option${a.nome===p.adv?' selected':''}>${a.nome}</option>`).join('')}</select>
+  </div></div>`;}
+
+function rdaParecer(){const p=pDet;const eu=EQUIPE.find(x=>x.nome===usuario.nome);const ro=p.adv!==usuario.nome&&eu?.role!=='admin'&&eu?.role!=='owner';
+  document.getElementById('da-parecer').innerHTML=`
+  ${ro?`<div class="warn-box">⚠ Processo sob responsabilidade de ${p.adv}. Somente ${p.adv} pode editar o parecer.</div>`:''}
+  <div class="sec" style="margin-top:0">Parecer / Análise jurídica</div>
+  <textarea style="width:100%;min-height:220px;padding:13px;font-size:13px;border:1px solid var(--bd2);border-radius:var(--r);background:var(--cr);color:var(--pt);font-family:'DM Sans',sans-serif;resize:vertical;line-height:1.65" id="par-txt" ${ro?'readonly':''}>${p.parecer}</textarea>
+  ${!ro?`<div style="display:flex;gap:8px;margin-top:10px;justify-content:space-between;align-items:center;flex-wrap:wrap">
+    <span style="font-size:12px;color:var(--gt)">Assinado por: ${avt(p.adv)} · ${hj()}</span>
+    <button class="btn btn-v btn-sm" onclick="salvPar()">Salvar parecer</button>
+  </div>`:''}`;
+}
+
+function rdaDocs(){const p=pDet;document.getElementById('da-docs').innerHTML=`
+  <div class="sec" style="margin-top:0">Documentos (${p.docs.length})</div>
+  <div class="file-list">${p.docs.map(d=>`<div class="fi"><span class="fi-ico">${ico(d.t)}</span><span class="fi-name">${d.n}</span><span class="fi-sz">${d.s}</span><div style="display:flex;gap:5px;flex-shrink:0"><button class="btn btn-o btn-xs" onclick="notif('Abrindo ${d.n}...','ok')">Abrir</button><button class="btn btn-o btn-xs" onclick="notif('Download iniciado.','ok')">↓</button></div></div>`).join('')}</div>
+  <div class="sec">Adicionar documentos</div>
+  <div class="drop"><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="addArqsP(this.files)">
+    <div class="drop-ico">+</div><div class="drop-txt">Clique ou arraste para adicionar</div><div class="drop-sub">PDF, Word, imagens</div>
+  </div>`;}
+
+function rdaHist(){const p=pDet;document.getElementById('da-hist').innerHTML=`
+  <div class="tl">${p.hist.slice().reverse().map((h,i,arr)=>`<div class="tl-i"><div style="position:relative">${i<arr.length-1?'<div class="tl-l"></div>':''}<div class="tl-d"></div></div><div style="flex:1"><div class="tl-ev">${h.ev}</div><div class="tl-m">${h.d} · ${h.u}</div></div></div>`).join('')}</div>
+  <div style="display:flex;gap:8px;margin-top:16px">
+    <input type="text" id="hist-inp" placeholder="Registrar evento..." style="flex:1;padding:9px 13px;font-size:13px;border:1px solid var(--bd2);border-radius:var(--r);font-family:'DM Sans',sans-serif;background:var(--br)">
+    <button class="btn btn-o" onclick="addHist()">Registrar</button>
+  </div>`;}
+
+function rdaMsg(){const p=pDet;document.getElementById('da-msg').innerHTML=`
+  <div class="info-box">Comunicação com <strong style="display:inline;font-weight:600">${p.municipio}</strong> sobre este processo.</div>
+  <div class="msg-wrap" id="msgs-adv">${p.msgs.map(m=>`<div class="msg ${m.de==='escritorio'?'msg-out':'msg-in'}">${m.txt}<div class="msg-meta">${m.d}</div></div>`).join('')}</div>
+  <div class="msg-row"><input type="text" id="mi-adv" placeholder="Escrever mensagem para ${p.municipio}..." onkeydown="if(event.key==='Enter')envMsg('adv')"><button class="btn btn-v" onclick="envMsg('adv')">Enviar</button></div>`;}
+
+function abrirDetMun(id){
+  const p=processos.find(x=>x.id===id);if(!p)return;pDet=p;
+  document.getElementById('dm-tit').textContent=p.num+' — '+p.assunto;
+  document.getElementById('dm-badges').innerHTML=bst(p.status);
+  const idx=STATUS.indexOf(p.status);
+  document.getElementById('dm-flow').innerHTML=STATUS.map((s,i)=>`${i>0?'<span style="color:var(--gt);font-size:10px;margin:0 2px">›</span>':''}<span class="fs ${i<idx?'done':i===idx?'cur':''}">${s}</span>`).join('');
+  document.getElementById('dm-info').innerHTML=`
+  ${p.status==='Pendente'?`<div class="warn-box"><strong>⚠ Ação necessária</strong>O escritório aguarda informação ou documento. Verifique as mensagens.</div>`:''}
+  ${p.status==='Parecer emitido'?`<div class="info-box"><strong>✓ Parecer disponível</strong>O parecer foi elaborado pelo escritório AF.</div>`:''}
+  <div class="fr2"><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;margin-bottom:4px">Tipo</p><p style="font-size:14px">${p.tipo}</p></div><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;margin-bottom:4px">Tributo</p><p style="font-size:14px">${p.tributo}</p></div></div>
+  <div class="fr2" style="margin-top:10px"><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;margin-bottom:4px">Valor</p><p style="font-size:15px;font-weight:700;color:var(--v)">${p.valor&&p.valor!=='—'?'R$ '+p.valor:'—'}</p></div><div><p style="font-size:10px;font-weight:700;color:var(--gt);text-transform:uppercase;margin-bottom:4px">Advogado responsável</p><p style="font-size:14px">${avt(p.adv)}</p></div></div>
+  ${p.parecer?`<div class="sec">Parecer do escritório AF</div><div style="background:var(--cr);border:1px solid var(--bd);border-radius:var(--r);padding:16px;font-size:13px;line-height:1.7;white-space:pre-wrap">${p.parecer}</div><div style="margin-top:10px;text-align:right"><button class="btn btn-o btn-sm" onclick="notif('Download do parecer iniciado.','ok')">↓ Baixar parecer</button></div>`:''}`;
+  document.getElementById('dm-docs').innerHTML=`
+  <div class="sec" style="margin-top:0">Documentos enviados (${p.docs.length})</div>
+  <div class="file-list">${p.docs.map(d=>`<div class="fi"><span class="fi-ico">${ico(d.t)}</span><span class="fi-name">${d.n}</span><span class="fi-sz">${d.s}</span><button class="btn btn-o btn-xs" onclick="notif('Abrindo...','ok')">Abrir</button></div>`).join('')}</div>
+  <div class="sec">Enviar documentos adicionais</div>
+  <div class="drop"><input type="file" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="addArqsP(this.files)">
+    <div class="drop-ico">+</div><div class="drop-txt">Enviar documentos complementares</div><div class="drop-sub">PDF, Word, imagens</div>
+  </div>`;
+  document.getElementById('dm-msg').innerHTML=`
+  <div class="info-box">Mensagens com o escritório AF — responsável: <strong style="display:inline;font-weight:600">${p.adv}</strong></div>
+  <div class="msg-wrap" id="msgs-mun">${p.msgs.map(m=>`<div class="msg ${m.de==='municipio'?'msg-out':'msg-in'}">${m.txt}<div class="msg-meta">${m.d}</div></div>`).join('')}</div>
+  <div class="msg-row"><input type="text" id="mi-mun" placeholder="Escrever mensagem para o escritório..." onkeydown="if(event.key==='Enter')envMsg('mun')"><button class="btn btn-az" onclick="envMsg('mun')">Enviar</button></div>`;
+  resetAbas('m-det-mun',['dm-info','dm-docs','dm-msg']);
+  document.getElementById('m-det-mun').classList.add('open');
+}
+
+// ══════════════════════════════════════════
+// AÇÕES
+// ══════════════════════════════════════════
+function avancar(){const p=pDet;if(!p)return;const idx=STATUS.indexOf(p.status);if(idx<STATUS.length-1){p.status=STATUS[idx+1];p.hist.push({ev:'Status: '+p.status,d:hj(),u:usuario.nome});fm('m-det-adv');renderMain();notif('Status atualizado: "'+p.status+'".','ok');}}
+function salvPar(){const t=document.getElementById('par-txt')?.value;if(!t||!pDet)return;pDet.parecer=t;pDet.hist.push({ev:'Parecer registrado',d:hj(),u:usuario.nome});notif('Parecer salvo.','ok');}
+function addHist(){const i=document.getElementById('hist-inp');if(!pDet||!i?.value.trim())return;pDet.hist.push({ev:i.value.trim(),d:hj(),u:usuario.nome});i.value='';rdaHist();notif('Evento registrado.','ok');}
+function envMsg(ctx){
+  const id=ctx==='adv'?'mi-adv':'mi-mun';const inp=document.getElementById(id);
+  if(!pDet||!inp?.value.trim())return;
+  const de=tipoUsr==='adv'?'escritorio':'municipio';
+  pDet.msgs.push({de,txt:inp.value.trim(),d:agora()});inp.value='';
+  ctx==='adv'?rdaMsg():(()=>{abrirDetMun(pDet.id);setTimeout(()=>document.querySelectorAll('#m-det-mun .tab')[2]?.click(),10)})();
+  notif('Mensagem enviada.','ok');
+}
+function addArqsP(files){if(!pDet)return;[...files].forEach(f=>{pDet.docs.push({n:f.name,t:ext(f.name),s:fmtSz(f.size)});pDet.hist.push({ev:'Documento adicionado: '+f.name,d:hj(),u:usuario.nome});});tipoUsr==='adv'?rdaDocs():abrirDetMun(pDet.id);notif(files.length+' documento(s) adicionado(s).','ok');}
+function abrirNovoAdv(){filsAdv=[];document.getElementById('fl-adv').innerHTML='';document.getElementById('na-num').value='PAT-2025-'+String(processos.length+1).padStart(3,'0');document.getElementById('na-data').value=new Date().toISOString().split('T')[0];document.getElementById('m-novo-adv').classList.add('open');}
+function salvarAdv(){
+  const num=document.getElementById('na-num').value||'PAT-XXX';
+  processos.unshift({id:Date.now(),num,municipio:document.getElementById('na-mun').value||'N/I',assunto:document.getElementById('na-ass').value||'Sem assunto',tipo:document.getElementById('na-tipo').value,tributo:document.getElementById('na-trib').value,adv:document.getElementById('na-adv').value,prio:document.getElementById('na-prio').value,status:'Recebido',data:(document.getElementById('na-data').value||'').split('-').reverse().join('/'),prazo:(document.getElementById('na-prazo').value||'').split('-').reverse().join('/'),valor:document.getElementById('na-valor').value||'—',obs:document.getElementById('na-obs').value,parecer:'',docs:[...filsAdv],msgs:[],origem:'interno',hist:[{ev:'Cadastrado pelo escritório',d:hj(),u:usuario.nome}]});
+  fm('m-novo-adv');renderMain();notif('Processo '+num+' cadastrado.','ok');
+}
+function salvarMun(){
+  const ass=document.getElementById('mn-ass').value.trim();if(!ass){notif('Informe o assunto.','warn');return;}
+  const m=MUNICIPIOS.find(x=>x.nome===usuario.nome)||{adv:'Jéssyca Karen'};
+  const num='PAT-'+new Date().getFullYear()+'-'+String(processos.length+1).padStart(3,'0');
+  processos.unshift({id:Date.now(),num,municipio:usuario.nome,assunto:ass,tipo:document.getElementById('mn-tipo').value,tributo:document.getElementById('mn-trib').value,adv:m.adv,prio:document.getElementById('mn-urg').value==='Normal'?'Baixa':'Alta',status:'Recebido',data:hj(),prazo:'',valor:document.getElementById('mn-valor').value||'—',obs:document.getElementById('mn-desc').value,parecer:'',docs:[...filsMun],msgs:[],origem:'municipio',hist:[{ev:'Enviado pelo portal do município',d:hj(),u:usuario.nome}]});
+  fm('m-novo-mun');['mn-ass','mn-desc','mn-valor'].forEach(id=>document.getElementById(id).value='');document.getElementById('fl-mun').innerHTML='';filsMun=[];
+  renderMain();notif('Processo enviado! O escritório receberá em instantes.','ok');
+}
+function abrirCadMun(){document.getElementById('cm-adv').innerHTML=EQUIPE.map(a=>`<option>${a.nome}</option>`).join('');document.getElementById('m-cad-mun').classList.add('open');}
+function salvarCadMun(){
+  const nome=document.getElementById('cm-nome').value.trim(),email=document.getElementById('cm-email').value.trim().toLowerCase(),adv=document.getElementById('cm-adv').value;
+  if(!nome||!email){notif('Preencha nome e e-mail.','warn');return;}
+  MUNICIPIOS.push({nome,email,adv});fm('m-cad-mun');
+  if(['municipios-v','config'].includes(viewAtual)) renderMain();
+  notif('Município '+nome+' cadastrado. Gmail: '+email,'ok');
+}
+function addArqs(files,ctx){
+  const arr=ctx==='adv'?filsAdv:filsMun,el=document.getElementById('fl-'+ctx);
+  [...files].forEach((f,i)=>{const idx=arr.push({n:f.name,t:ext(f.name),s:fmtSz(f.size)})-1;const d=document.createElement('div');d.className='fi';d.innerHTML=`<span class="fi-ico">${ico(ext(f.name))}</span><span class="fi-name">${f.name}</span><span class="fi-sz">${fmtSz(f.size)}</span><button class="fi-rm" onclick="this.closest('.fi').remove()">×</button>`;el.appendChild(d);});
+}
+
+// ══════════════════════════════════════════
+// UTILIDADES
+// ══════════════════════════════════════════
+function avt(nome){const a=EQUIPE.find(x=>x.nome===nome)||{ini:'?',cor:'#eee',ct:'#666'};return`<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:22px;height:22px;border-radius:50%;background:${a.cor};color:${a.ct};font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0">${a.ini}</span>${nome}</span>`;}
+function bst(s){const m={'Recebido':'bx-rec','Em análise':'bx-ana','Pendente':'bx-pen','Concluído':'bx-con','Parecer emitido':'bx-par'};return`<span class="bx ${m[s]||''}">${s}</span>`;}
+function prib(p){return p==='Alta'?`<span class="bx-pa">● Alta</span>`:p==='Baixa'?`<span class="bx-pb">● Baixa</span>`:`<span class="bx-pm">● Média</span>`;}
+function ico(t){return t==='pdf'?'📄':t==='doc'||t==='docx'?'📝':t==='jpg'||t==='jpeg'||t==='png'?'🖼️':'📁'}
+function ext(n){return(n.split('.').pop()||'').toLowerCase()}
+function fmtSz(b){return b>1048576?(b/1048576).toFixed(1)+' MB':Math.round(b/1024)+' KB'}
+function hj(){return new Date().toLocaleDateString('pt-BR')}
+function agora(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}
+function fm(id){document.getElementById(id).classList.remove('open')}
+function aba(el,id){el.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');el.closest('.modal').querySelectorAll('[id^="da-"],[id^="dm-"]').forEach(e=>e.style.display='none');document.getElementById(id).style.display='';}
+function resetAbas(mid,abas){const m=document.getElementById(mid);m.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));abas.forEach((id,i)=>{const e=document.getElementById(id);if(e)e.style.display=i===0?'':'none'});}
+function notif(msg,tipo='ok'){const el=document.getElementById('notif');el.textContent=msg;el.className='notif '+tipo;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',4200);}
+</script>
+</body>
+</html>
