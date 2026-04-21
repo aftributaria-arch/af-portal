@@ -543,7 +543,7 @@ const EQUIPE = [
 // ══════════════════════════════════════════
 let MUNICIPIOS = [
   {nome:'Abadiânia',            email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'Acreúna',              email:'', adv:'Danrlley',     iss:'Jéssica',         contrato:'AF',  obs:'Assessoria: Danrlley (Ass) e Roger (Post)'},
+  {nome:'Acreúna',              email:'', adv:'Danrlley',     iss:'Jéssica',         contrato:'AF',  obs:'Assessoria: Danrlley e Roger'},
   {nome:'Águas Lindas',         email:'', adv:'Wagner Melo',  iss:'Jéssica / Jéssyca Karen', contrato:'AF'},
   {nome:'Alto Horizonte',       email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
   {nome:'Alto Paraíso',         email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
@@ -589,8 +589,7 @@ function setTab(tipo,el){
 }
 
 const CLIENT_ID = '89123681725-jn3c7d271cqvicjsnuud4buhbabjpm7d.apps.googleusercontent.com';
-// Callback page URL - must match exactly what's in Google Cloud Console
-const REDIRECT = 'https://aftributaria-arch.github.io/af-portal/callback.html';
+const REDIRECT = 'https://aftributaria-arch.github.io/af-portal/';
 
 function loginGoogle(ctx){
   sessionStorage.setItem('af_ctx', ctx);
@@ -602,30 +601,16 @@ function loginGoogle(ctx){
     nonce: Math.random().toString(36).slice(2),
     prompt: 'select_account'
   });
-  // Open in same window
-  window.location.href = url;
+  window.location.assign(url);
 }
 
 function checkCallback(){
-  // Check if we're returning from Google OAuth
   const hash = window.location.hash.slice(1);
-  if(!hash) {
-    // Also check sessionStorage for token passed from callback
-    const stored = sessionStorage.getItem('af_token');
-    if(stored) {
-      sessionStorage.removeItem('af_token');
-      processToken(stored);
-    }
-    return;
-  }
+  if(!hash) return;
   const p = new URLSearchParams(hash);
   const token = p.get('id_token');
   if(!token) return;
   history.replaceState(null,'',window.location.pathname);
-  processToken(token);
-}
-
-function processToken(token){
   try{
     const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
     const email = payload.email.toLowerCase();
@@ -634,7 +619,7 @@ function processToken(token){
     sessionStorage.removeItem('af_ctx');
     if(ctx==='adv'){
       const a = EQUIPE.find(x=>x.email===email);
-      if(!a){ mostrarErro('E-mail não autorizado: '+email+'. Solicite acesso ao escritório AF.'); return; }
+      if(!a){ mostrarErro('E-mail não autorizado: '+email); return; }
       usuario={...a,foto}; tipoUsr='adv'; boot();
     } else {
       const m = MUNICIPIOS.find(x=>x.email===email);
@@ -800,16 +785,7 @@ function rMunicipios(c){
       const concl=ps.filter(p=>['Concluído','Parecer emitido'].includes(p.status)).length;
       const aberto=ps.filter(p=>!['Concluído','Parecer emitido'].includes(p.status)).length;
       const badge=m.contrato==='AF'?'background:#E1F5EE;color:#085041':m.contrato==='FN'?'background:#EAF2FC;color:#1457A0':'background:#EEEDFE;color:#4A41AA';
-      return\`<tr onclick="filtros.municipio='\${m.nome}';sv('todos',null)">
-        <td style="color:var(--gt);font-size:12px">\${i+1}</td>
-        <td><span style="font-weight:600">\${m.nome}</span>\${m.obs?'<div style="font-size:11px;color:var(--gt);margin-top:2px">'+m.obs+'</div>':''}</td>
-        <td><span style="display:inline-flex;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;\${badge}">\${m.contrato||'—'}</span></td>
-        <td>\${avt(m.adv)}</td>
-        <td style="font-size:12px">\${m.iss||'—'}</td>
-        <td style="text-align:center">\${ps.length}</td>
-        <td style="text-align:center;color:\${aberto>0?'var(--am)':'var(--gt)'}">\${aberto}</td>
-        <td style="text-align:center;color:var(--v);font-weight:700">\${concl}</td>
-      </tr>\`;
+      (()=>{const tr=document.createElement('tr');tr.onclick=()=>{filtros.municipio=m.nome;sv('todos',null)};tr.style.cursor='pointer';tr.innerHTML='<td style="color:var(--gt);font-size:12px">'+(i+1)+'</td><td><span style="font-weight:600">'+m.nome+'</span>'+(m.obs?'<div style="font-size:11px;color:var(--gt)">'+m.obs+'</div>':'')+'</td><td><span style="padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;'+bc+'">'+( m.contrato||'—')+'</span></td><td>'+avt(m.adv)+'</td><td style="font-size:12px">'+(m.iss||'—')+'</td><td style="text-align:center">'+ps.length+'</td><td style="text-align:center;color:'+(aberto>0?'var(--am)':'var(--gt)')+'">'+aberto+'</td><td style="text-align:center;color:var(--v);font-weight:700">'+concl+'</td>';return tr.outerHTML;})()
     }).join('')}</tbody>
   </table></div>`;
 }
