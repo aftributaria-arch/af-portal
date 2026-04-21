@@ -445,7 +445,7 @@ tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
       <div class="field"><label>Nome completo</label><input id="s-nome" placeholder="Ex: Ana Silva"></div>
       <div class="field"><label>E-mail de acesso</label><input type="email" id="s-email" placeholder="ana@gmail.com"></div>
       <div class="field"><label>Senha de acesso</label><input type="password" id="s-senha" placeholder="af2025"></div>
-      <div class="field"><label>Função no sistema</label>
+      <div class="field" id="s-role-wrap" style="display:none"><label>Função no sistema</label>
         <select id="s-role">
           <option value="adv">Advogado(a)</option>
           <option value="admin">Administrador(a)</option>
@@ -966,6 +966,7 @@ function abrirEditServidor(id) {
   document.getElementById('s-senha').value=a.senha;
   document.getElementById('s-role').value=a.role;
   document.getElementById('s-cargo').value=a.cargo||'';
+  document.getElementById('s-role-wrap').style.display=(a.role==='owner'||a.role==='admin')?'':'none';
   document.getElementById('s-cor').value=a.cor;
   document.getElementById('s-ct').value=a.ct;
   document.getElementById('m-servidor').classList.add('open');
