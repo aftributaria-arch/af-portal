@@ -445,12 +445,15 @@ tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
       <div class="field"><label>Nome completo</label><input id="s-nome" placeholder="Ex: Ana Silva"></div>
       <div class="field"><label>E-mail de acesso</label><input type="email" id="s-email" placeholder="ana@gmail.com"></div>
       <div class="field"><label>Senha de acesso</label><input type="password" id="s-senha" placeholder="af2025"></div>
-      <div class="field"><label>Função</label>
+      <div class="field"><label>Função no sistema</label>
         <select id="s-role">
           <option value="adv">Advogado(a)</option>
           <option value="admin">Administrador(a)</option>
           <option value="owner">Sócia / Proprietária</option>
         </select>
+      </div>
+      <div class="field"><label>Cargo / Ocupação</label>
+        <input id="s-cargo" placeholder="Ex: Advogada Tributarista, Consultora, Estagiária...">
       </div>
       <div class="fr2">
         <div style="display:flex;align-items:center;gap:8px">
@@ -515,14 +518,14 @@ tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
 // DADOS — editáveis pelo painel admin
 // ══════════════════════════════════════════
 let EQUIPE = [
-  {id:1, nome:'Anna Karolynne', email:'karolmfreire@gmail.com',       senha:'karol2025', ini:'AK', cor:'#E1F5EE', ct:'#0F6E56', role:'owner'},
-  {id:2, nome:'Daniella',       email:'daniellapimentaadv@gmail.com', senha:'dani2025',  ini:'DP', cor:'#EAF2FC', ct:'#1457A0', role:'admin'},
-  {id:3, nome:'Jéssyca Karen',  email:'jessycakmfsalles13@gmail.com', senha:'af2025',    ini:'JK', cor:'#EEEDFE', ct:'#4A41AA', role:'adv'},
-  {id:4, nome:'Wagner Melo',    email:'adv.wagnermelo@gmail.com',     senha:'af2025',    ini:'WM', cor:'#FDF0DB', ct:'#B06C10', role:'adv'},
-  {id:5, nome:'Danrlley',       email:'danrlleyh@gmail.com',          senha:'af2025',    ini:'DH', cor:'#FAEDE8', ct:'#8B3419', role:'adv'},
-  {id:6, nome:'Renata',         email:'re.deus1976@gmail.com',        senha:'af2025',    ini:'RE', cor:'#FBEBEB', ct:'#922828', role:'adv'},
-  {id:7, nome:'Roger',          email:'rogerduranalves@gmail.com',    senha:'af2025',    ini:'RO', cor:'#E1F5EE', ct:'#085041', role:'adv'},
-  {id:8, nome:'Jéssica',        email:'jessicaamoraes94@gmail.com',   senha:'af2025',    ini:'JA', cor:'#EAF2FC', ct:'#1457A0', role:'adv'},
+  {id:1, nome:'Anna Karolynne', email:'karolmfreire@gmail.com',       senha:'karol2025', ini:'AK', cor:'#E1F5EE', ct:'#0F6E56', role:'owner', cargo:'Sócia Proprietária'},
+  {id:2, nome:'Daniella',       email:'daniellapimentaadv@gmail.com', senha:'dani2025',  ini:'DP', cor:'#EAF2FC', ct:'#1457A0', role:'admin', cargo:'Administradora'},
+  {id:3, nome:'Jéssyca Karen',  email:'jessycakmfsalles13@gmail.com', senha:'af2025',    ini:'JK', cor:'#EEEDFE', ct:'#4A41AA', role:'adv',   cargo:''},
+  {id:4, nome:'Wagner Melo',    email:'adv.wagnermelo@gmail.com',     senha:'af2025',    ini:'WM', cor:'#FDF0DB', ct:'#B06C10', role:'adv',   cargo:''},
+  {id:5, nome:'Danrlley',       email:'danrlleyh@gmail.com',          senha:'af2025',    ini:'DH', cor:'#FAEDE8', ct:'#8B3419', role:'adv',   cargo:''},
+  {id:6, nome:'Renata',         email:'re.deus1976@gmail.com',        senha:'af2025',    ini:'RE', cor:'#FBEBEB', ct:'#922828', role:'adv',   cargo:''},
+  {id:7, nome:'Roger',          email:'rogerduranalves@gmail.com',    senha:'af2025',    ini:'RO', cor:'#E1F5EE', ct:'#085041', role:'adv',   cargo:''},
+  {id:8, nome:'Jéssica',        email:'jessicaamoraes94@gmail.com',   senha:'af2025',    ini:'JA', cor:'#EAF2FC', ct:'#1457A0', role:'adv',   cargo:''},
 ];
 
 let MUNICIPIOS = [
@@ -725,7 +728,7 @@ function rEquipe(c) {
         <div style="width:42px;height:42px;border-radius:50%;background:${a.cor};color:${a.ct};font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">${a.ini}</div>
         <div><div style="font-size:14px;font-weight:600">${a.nome}</div>
         <div style="margin-top:3px">${roleBadge(a.role)}</div>
-        <div style="font-size:11px;color:var(--gt);margin-top:2px">${a.email}</div></div>
+        <div style="font-size:11px;color:var(--gt);margin-top:2px">${a.cargo||a.email}</div></div>
       </div>
       ${[['Processos',meus.length,''],['Em análise',meus.filter(p=>p.status==='Em análise').length,''],['Finalizados',concl,'color:var(--v);font-weight:700']].map(([l,v,st])=>`<div class="asr"><span style="color:var(--gt)">${l}</span><span style="${st}">${v}</span></div>`).join('')}
       <div class="adv-bar"><div class="adv-bar-f" style="width:${pct}%"></div></div>
@@ -769,10 +772,11 @@ function rAdmin(c) {
     <p>Adicione, edite ou remova membros da equipe e defina suas funções e senhas.</p>
     <div style="margin-bottom:10px"><button class="btn btn-v btn-sm" onclick="abrirNovoServidor()">+ Novo servidor</button></div>
     <div class="tw"><table>
-      <thead><tr><th>Nome</th><th>E-mail</th><th style="width:110px">Função</th><th style="width:80px">Ações</th></tr></thead>
+      <thead><tr><th>Nome</th><th>E-mail</th><th style="width:150px">Cargo / Ocupação</th><th style="width:110px">Função</th><th style="width:80px">Ações</th></tr></thead>
       <tbody>${EQUIPE.map(a=>`<tr>
         <td>${avt(a.nome)}</td>
         <td style="font-size:12px;color:var(--gt)">${a.email}</td>
+        <td style="font-size:12px;color:var(--gt)">${a.cargo||'—'}</td>
         <td>${roleBadge(a.role)}</td>
         <td><button class="btn btn-o btn-xs" onclick="abrirEditServidor(${a.id})">Editar</button></td>
       </tr>`).join('')}</tbody>
@@ -946,7 +950,7 @@ function abrirNovoServidor() {
   editServId=null;
   document.getElementById('m-serv-titulo').textContent='Novo servidor';
   document.getElementById('btn-del-serv').style.display='none';
-  ['s-nome','s-email','s-senha'].forEach(id=>document.getElementById(id).value='');
+  ['s-nome','s-email','s-senha','s-cargo'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('s-role').value='adv';
   document.getElementById('s-cor').value='#E1F5EE';
   document.getElementById('s-ct').value='#0F6E56';
@@ -961,6 +965,7 @@ function abrirEditServidor(id) {
   document.getElementById('s-email').value=a.email;
   document.getElementById('s-senha').value=a.senha;
   document.getElementById('s-role').value=a.role;
+  document.getElementById('s-cargo').value=a.cargo||'';
   document.getElementById('s-cor').value=a.cor;
   document.getElementById('s-ct').value=a.ct;
   document.getElementById('m-servidor').classList.add('open');
@@ -974,11 +979,12 @@ function salvarServidor() {
   const ct=document.getElementById('s-ct').value;
   if(!nome||!email||!senha){ notif('Preencha todos os campos.','warn'); return; }
   const ini=nome.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  const cargo=document.getElementById('s-cargo').value.trim();
   if(editServId){
     const idx=EQUIPE.findIndex(x=>x.id===editServId);
-    EQUIPE[idx]={...EQUIPE[idx],nome,email,senha,role,cor,ct,ini};
+    EQUIPE[idx]={...EQUIPE[idx],nome,email,senha,role,cor,ct,ini,cargo};
   } else {
-    EQUIPE.push({id:Date.now(),nome,email,senha,role,cor,ct,ini});
+    EQUIPE.push({id:Date.now(),nome,email,senha,role,cor,ct,ini,cargo});
   }
   fm('m-servidor'); preencherSelects(); renderMain();
   notif('Servidor '+(editServId?'atualizado':'cadastrado')+' com sucesso.','ok');
