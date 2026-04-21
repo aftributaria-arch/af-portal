@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Autenticando...</title></head>
+<body>
+<p style="font-family:sans-serif;text-align:center;margin-top:40px;color:#555">Autenticando, aguarde...</p>
+<script>
+  // Get token from hash and pass to main page
+  const hash = window.location.hash.slice(1);
+  const params = new URLSearchParams(hash);
+  const token = params.get('id_token');
+  if(token){
+    sessionStorage.setItem('af_token', token);
+    window.location.href = '/af-portal/';
+  } else {
+    window.location.href = '/af-portal/';
+  }
+</script>
+</body>
+</html>

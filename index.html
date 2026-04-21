@@ -566,7 +566,7 @@ let MUNICIPIOS = [
   {nome:'SAD - Planejamento',   email:'', adv:'Wagner Melo',  iss:'',                contrato:'FN'},
   {nome:'Santa Tereza',         email:'', adv:'Roger',        iss:'Jéssyca Karen',  contrato:'AF'},
   {nome:'São Domingos',         email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'FN'},
-  {nome:'São João d'Aliança',  email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'São João da Aliança',  email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'AF'},
   {nome:'São Luiz do Norte',    email:'', adv:'Danrlley',     iss:'Jéssyca Karen',  contrato:'FN'},
   {nome:'Varjão',               email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
 ];
@@ -589,7 +589,8 @@ function setTab(tipo,el){
 }
 
 const CLIENT_ID = '89123681725-jn3c7d271cqvicjsnuud4buhbabjpm7d.apps.googleusercontent.com';
-const REDIRECT = 'https://aftributaria-arch.github.io/af-portal/';
+// Callback page URL - must match exactly what's in Google Cloud Console
+const REDIRECT = 'https://aftributaria-arch.github.io/af-portal/callback.html';
 
 function loginGoogle(ctx){
   sessionStorage.setItem('af_ctx', ctx);
@@ -601,16 +602,30 @@ function loginGoogle(ctx){
     nonce: Math.random().toString(36).slice(2),
     prompt: 'select_account'
   });
-  window.location.assign(url);
+  // Open in same window
+  window.location.href = url;
 }
 
 function checkCallback(){
+  // Check if we're returning from Google OAuth
   const hash = window.location.hash.slice(1);
-  if(!hash) return;
+  if(!hash) {
+    // Also check sessionStorage for token passed from callback
+    const stored = sessionStorage.getItem('af_token');
+    if(stored) {
+      sessionStorage.removeItem('af_token');
+      processToken(stored);
+    }
+    return;
+  }
   const p = new URLSearchParams(hash);
   const token = p.get('id_token');
   if(!token) return;
   history.replaceState(null,'',window.location.pathname);
+  processToken(token);
+}
+
+function processToken(token){
   try{
     const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
     const email = payload.email.toLowerCase();
@@ -619,7 +634,7 @@ function checkCallback(){
     sessionStorage.removeItem('af_ctx');
     if(ctx==='adv'){
       const a = EQUIPE.find(x=>x.email===email);
-      if(!a){ mostrarErro('E-mail não autorizado: '+email); return; }
+      if(!a){ mostrarErro('E-mail não autorizado: '+email+'. Solicite acesso ao escritório AF.'); return; }
       usuario={...a,foto}; tipoUsr='adv'; boot();
     } else {
       const m = MUNICIPIOS.find(x=>x.email===email);
