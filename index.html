@@ -313,51 +313,32 @@ tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
 
       <!-- ADVOGADO -->
       <div class="fp on" id="panel-adv">
-        <button class="google-btn" onclick="loginGoogle('adv')">
-          <svg class="g-ico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Entrar com Google
-        </button>
-        <div class="divider">acesso de demonstração</div>
-        <div class="demo-panel">
-          <div class="demo-title">Simular acesso — equipe AF</div>
-          <button class="demo-btn" onclick="loginDemo('Jéssyca Karen','jessycakmfsalles13@gmail.com','JK','#E1F5EE','#0F6E56')">
-            <div class="db-ini" style="background:#E1F5EE;color:#0F6E56">JK</div>
-            <div><div class="db-name">Jéssyca Karen</div><div class="db-role">jessycakmfsalles13@gmail.com</div></div>
-          </button>
-          <button class="demo-btn" onclick="loginDemo('Wagner Melo','adv.wagnermelo@gmail.com','WM','#EAF2FC','#1457A0')">
-            <div class="db-ini" style="background:#EAF2FC;color:#1457A0">WM</div>
-            <div><div class="db-name">Wagner Melo</div><div class="db-role">adv.wagnermelo@gmail.com</div></div>
-          </button>
-          <button class="demo-btn" onclick="loginDemo('Danrlley H.','danrlleyh@gmail.com','DH','#EEEDFE','#4A41AA')">
-            <div class="db-ini" style="background:#EEEDFE;color:#4A41AA">DH</div>
-            <div><div class="db-name">Danrlley H.</div><div class="db-role">danrlleyh@gmail.com</div></div>
-          </button>
+        <div class="ff">
+          <label>E-mail</label>
+          <input type="email" id="adv-email" placeholder="seuemail@gmail.com" onkeydown="if(event.key==='Enter')fazerLogin()">
         </div>
+        <div class="ff">
+          <label>Senha</label>
+          <input type="password" id="adv-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLogin()">
+        </div>
+        <button class="btn-login green" onclick="fazerLogin()">Entrar</button>
       </div>
 
       <!-- MUNICÍPIO -->
       <div class="fp" id="panel-mun">
         <div class="login-info">
-          <strong>Acesso via Gmail da prefeitura</strong>
-          Clique em "Entrar com Google" e use o e-mail institucional cadastrado pelo escritório AF. Se ainda não tiver acesso, entre em contato com o escritório.
+          <strong>Acesso do município</strong>
+          Use o e-mail e senha fornecidos pelo escritório AF.
         </div>
-        <button class="google-btn" onclick="loginGoogle('mun')">
-          <svg class="g-ico" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Entrar com Google
-        </button>
-        <div class="divider">acesso de demonstração</div>
-        <div class="demo-panel">
-          <div class="demo-title">Simular acesso — município</div>
-          <button class="demo-btn" onclick="loginDemoMun('Goiânia','fazenda@goiania.go.gov.br')">
-            <div class="db-ini" style="background:#EAF2FC;color:#1457A0">GO</div>
-            <div><div class="db-name">Goiânia</div><div class="db-role">fazenda@goiania.go.gov.br</div></div>
-          </button>
-          <button class="demo-btn" onclick="loginDemoMun('Anápolis','fazenda@anapolis.go.gov.br')">
-            <div class="db-ini" style="background:#EAF2FC;color:#1457A0">AN</div>
-            <div><div class="db-name">Anápolis</div><div class="db-role">fazenda@anapolis.go.gov.br</div></div>
-          </button>
+        <div class="ff">
+          <label>E-mail</label>
+          <input type="email" id="mun-email" placeholder="fazenda@municipio.go.gov.br" onkeydown="if(event.key==='Enter')fazerLoginMun()">
         </div>
-      </div>
+        <div class="ff">
+          <label>Senha</label>
+          <input type="password" id="mun-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')fazerLoginMun()">
+        </div>
+        <button class="btn-login blue" onclick="fazerLoginMun()">Entrar</button>      </div>
 
     </div>
   </div>
@@ -528,47 +509,47 @@ tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
 // EQUIPE DO ESCRITÓRIO — e-mails autorizados
 // ══════════════════════════════════════════
 const EQUIPE = [
-  {nome:'Anna Karolynne', email:'karolmfreire@gmail.com',       ini:'AK', cor:'#E1F5EE', ct:'#0F6E56', role:'owner'},
-  {nome:'Daniella',       email:'daniellapimentaadv@gmail.com', ini:'DP', cor:'#EAF2FC', ct:'#1457A0', role:'admin'},
-  {nome:'Jéssyca Karen',  email:'jessycakmfsalles13@gmail.com', ini:'JK', cor:'#EEEDFE', ct:'#4A41AA', role:'adv'},
-  {nome:'Wagner Melo',    email:'adv.wagnermelo@gmail.com',     ini:'WM', cor:'#FDF0DB', ct:'#B06C10', role:'adv'},
-  {nome:'Danrlley',       email:'danrlleyh@gmail.com',          ini:'DH', cor:'#FAEDE8', ct:'#8B3419', role:'adv'},
-  {nome:'Renata',         email:'re.deus1976@gmail.com',        ini:'RE', cor:'#FBEBEB', ct:'#922828', role:'adv'},
-  {nome:'Roger',          email:'rogerduranalves@gmail.com',    ini:'RO', cor:'#E1F5EE', ct:'#085041', role:'adv'},
-  {nome:'Jéssica',        email:'jessicaamoraes94@gmail.com',   ini:'JA', cor:'#EAF2FC', ct:'#1457A0', role:'adv'},
+  {nome:'Anna Karolynne', email:'karolmfreire@gmail.com',       senha:'af2025', ini:'AK', cor:'#E1F5EE', ct:'#0F6E56', role:'owner'},
+  {nome:'Daniella',       email:'daniellapimentaadv@gmail.com', senha:'af2025', ini:'DP', cor:'#EAF2FC', ct:'#1457A0', role:'admin'},
+  {nome:'Jéssyca Karen',  email:'jessycakmfsalles13@gmail.com', senha:'af2025', ini:'JK', cor:'#EEEDFE', ct:'#4A41AA', role:'adv'},
+  {nome:'Wagner Melo',    email:'adv.wagnermelo@gmail.com',     senha:'af2025', ini:'WM', cor:'#FDF0DB', ct:'#B06C10', role:'adv'},
+  {nome:'Danrlley',       email:'danrlleyh@gmail.com',          senha:'af2025', ini:'DH', cor:'#FAEDE8', ct:'#8B3419', role:'adv'},
+  {nome:'Renata',         email:'re.deus1976@gmail.com',        senha:'af2025', ini:'RE', cor:'#FBEBEB', ct:'#922828', role:'adv'},
+  {nome:'Roger',          email:'rogerduranalves@gmail.com',    senha:'af2025', ini:'RO', cor:'#E1F5EE', ct:'#085041', role:'adv'},
+  {nome:'Jéssica',        email:'jessicaamoraes94@gmail.com',   senha:'af2025', ini:'JA', cor:'#EAF2FC', ct:'#1457A0', role:'adv'},
 ];
 
 // ══════════════════════════════════════════
 // MUNICÍPIOS — adicione os e-mails quando tiver
 // ══════════════════════════════════════════
 let MUNICIPIOS = [
-  {nome:'Abadiânia',            email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'Acreúna',              email:'', adv:'Danrlley',     iss:'Jéssica',         contrato:'AF',  obs:'Assessoria: Danrlley e Roger'},
-  {nome:'Águas Lindas',         email:'', adv:'Wagner Melo',  iss:'Jéssica / Jéssyca Karen', contrato:'AF'},
-  {nome:'Alto Horizonte',       email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'Alto Paraíso',         email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
-  {nome:'Aragoiânia',           email:'', adv:'Danrlley',     iss:'Jéssica',         contrato:'AF'},
-  {nome:'Caldazinha',           email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
-  {nome:'Cavalcante',           email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
-  {nome:'Ceres',                email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'Cristianópolis',       email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
-  {nome:'Goiatuba',             email:'', adv:'Roger',        iss:'Jéssica',         contrato:'AF'},
-  {nome:'Guapó',                email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'AF'},
-  {nome:'Jussara',              email:'', adv:'Daniella',     iss:'Jéssica',         contrato:'FN'},
-  {nome:'Mambaí',               email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'FN'},
-  {nome:'Nova Crixás',          email:'', adv:'Roger',        iss:'Jéssica',         contrato:'AF'},
-  {nome:'Nova Roma',            email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
-  {nome:'Nova Veneza',          email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'INTEGRA'},
-  {nome:'Palmeiras de Goiás',   email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'AF'},
-  {nome:'Pires do Rio',         email:'', adv:'Danrlley',     iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'Planaltina',           email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'FN'},
-  {nome:'SAB',                  email:'', adv:'Roger',        iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'SAD - Planejamento',   email:'', adv:'Wagner Melo',  iss:'',                contrato:'FN'},
-  {nome:'Santa Tereza',         email:'', adv:'Roger',        iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'São Domingos',         email:'', adv:'Wagner Melo',  iss:'Jéssica',         contrato:'FN'},
-  {nome:'São João da Aliança',  email:'', adv:'Wagner Melo',  iss:'Jéssyca Karen',  contrato:'AF'},
-  {nome:'São Luiz do Norte',    email:'', adv:'Danrlley',     iss:'Jéssyca Karen',  contrato:'FN'},
-  {nome:'Varjão',               email:'', adv:'Daniella',     iss:'Jéssyca Karen',  contrato:'AF'},
+  {nome:'Abadiânia',          email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'Acreúna',            email:'', senha:'af2025', adv:'Danrlley',    iss:'Jéssica',            contrato:'AF', obs:'Danrlley e Roger'},
+  {nome:'Águas Lindas',       email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssica e Jéssyca', contrato:'AF'},
+  {nome:'Alto Horizonte',     email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'Alto Paraíso',       email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssica',            contrato:'AF'},
+  {nome:'Aragoiânia',         email:'', senha:'af2025', adv:'Danrlley',    iss:'Jéssica',            contrato:'AF'},
+  {nome:'Caldazinha',         email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssica',            contrato:'AF'},
+  {nome:'Cavalcante',         email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssica',            contrato:'AF'},
+  {nome:'Ceres',              email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'Cristianópolis',     email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssica',            contrato:'AF'},
+  {nome:'Goiatuba',           email:'', senha:'af2025', adv:'Roger',       iss:'Jéssica',            contrato:'AF'},
+  {nome:'Guapó',              email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssica',            contrato:'AF'},
+  {nome:'Jussara',            email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssica',            contrato:'FN'},
+  {nome:'Mambaí',             email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssyca Karen',     contrato:'FN'},
+  {nome:'Nova Crixás',        email:'', senha:'af2025', adv:'Roger',       iss:'Jéssica',            contrato:'AF'},
+  {nome:'Nova Roma',          email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssica',            contrato:'AF'},
+  {nome:'Nova Veneza',        email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssyca Karen',     contrato:'INTEGRA'},
+  {nome:'Palmeiras de Goiás', email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssica',            contrato:'AF'},
+  {nome:'Pires do Rio',       email:'', senha:'af2025', adv:'Danrlley',    iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'Planaltina',         email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssyca Karen',     contrato:'FN'},
+  {nome:'SAB',                email:'', senha:'af2025', adv:'Roger',       iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'SAD - Planejamento', email:'', senha:'af2025', adv:'Wagner Melo', iss:'',                   contrato:'FN'},
+  {nome:'Santa Tereza',       email:'', senha:'af2025', adv:'Roger',       iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'São Domingos',       email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssica',            contrato:'FN'},
+  {nome:'São João da Aliança',email:'', senha:'af2025', adv:'Wagner Melo', iss:'Jéssyca Karen',     contrato:'AF'},
+  {nome:'São Luiz do Norte',  email:'', senha:'af2025', adv:'Danrlley',    iss:'Jéssyca Karen',     contrato:'FN'},
+  {nome:'Varjão',             email:'', senha:'af2025', adv:'Daniella',    iss:'Jéssyca Karen',     contrato:'AF'},
 ];
 
 const STATUS = ['Recebido','Em análise','Pendente','Parecer emitido','Concluído'];
@@ -588,58 +569,26 @@ function setTab(tipo,el){
   ocultarErro();
 }
 
-const CLIENT_ID = '89123681725-jn3c7d271cqvicjsnuud4buhbabjpm7d.apps.googleusercontent.com';
-const REDIRECT = 'https://aftributaria-arch.github.io/af-portal/';
-
-function loginGoogle(ctx){
-  sessionStorage.setItem('af_ctx', ctx);
-  const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams({
-    client_id: CLIENT_ID,
-    redirect_uri: REDIRECT,
-    response_type: 'id_token',
-    scope: 'openid email profile',
-    nonce: Math.random().toString(36).slice(2),
-    prompt: 'select_account'
-  });
-  window.location.assign(url);
+function fazerLogin(){
+  const email = (document.getElementById('adv-email').value||'').trim().toLowerCase();
+  const senha = document.getElementById('adv-senha').value;
+  const a = EQUIPE.find(x=>x.email===email);
+  if(!a){ mostrarErro('E-mail não encontrado.'); return; }
+  if(senha !== a.senha){ mostrarErro('Senha incorreta.'); return; }
+  usuario={...a, foto:null}; tipoUsr='adv'; boot();
 }
 
-function checkCallback(){
-  const hash = window.location.hash.slice(1);
-  if(!hash) return;
-  const p = new URLSearchParams(hash);
-  const token = p.get('id_token');
-  if(!token) return;
-  history.replaceState(null,'',window.location.pathname);
-  try{
-    const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
-    const email = payload.email.toLowerCase();
-    const foto = payload.picture||null;
-    const ctx = sessionStorage.getItem('af_ctx')||'adv';
-    sessionStorage.removeItem('af_ctx');
-    if(ctx==='adv'){
-      const a = EQUIPE.find(x=>x.email===email);
-      if(!a){ mostrarErro('E-mail não autorizado: '+email); return; }
-      usuario={...a,foto}; tipoUsr='adv'; boot();
-    } else {
-      const m = MUNICIPIOS.find(x=>x.email===email);
-      if(!m){ mostrarErro('E-mail não cadastrado: '+email+'. Solicite acesso ao escritório AF.'); return; }
-      usuario={nome:m.nome,email,ini:m.nome.slice(0,2).toUpperCase(),advResponsavel:m.adv,foto};
-      tipoUsr='municipio'; boot();
-    }
-  } catch(e){ mostrarErro('Erro no login. Tente novamente.'); }
+function fazerLoginMun(){
+  const email = (document.getElementById('mun-email').value||'').trim().toLowerCase();
+  const senha = document.getElementById('mun-senha').value;
+  const m = MUNICIPIOS.find(x=>x.email===email);
+  if(!m){ mostrarErro('E-mail não cadastrado. Solicite acesso ao escritório AF.'); return; }
+  if(senha !== m.senha){ mostrarErro('Senha incorreta.'); return; }
+  usuario={nome:m.nome,email,ini:m.nome.slice(0,2).toUpperCase(),advResponsavel:m.adv,foto:null};
+  tipoUsr='municipio'; boot();
 }
 
-window.addEventListener('DOMContentLoaded', checkCallback);
 
-function loginDemo(nome,email,ini,cor,ct){
-  usuario={nome,email,ini,cor,ct,role:'adv',foto:null};tipoUsr='adv';boot();
-}
-function loginDemoMun(nome,email){
-  const m=MUNICIPIOS.find(x=>x.nome===nome)||{adv:'Jéssyca Karen'};
-  usuario={nome,email,tipo:'municipio',ini:nome.substring(0,2).toUpperCase(),advResponsavel:m.adv,foto:null};
-  tipoUsr='municipio';boot();
-}
 function logout(){usuario=null;tipoUsr=null;document.getElementById('login-screen').style.display='grid';document.getElementById('app').style.display='none';}
 
 function mostrarErro(msg){const e=document.getElementById('login-err');e.textContent=msg;e.style.display='block';document.getElementById('login-ok').style.display='none'}
