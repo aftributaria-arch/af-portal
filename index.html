@@ -245,6 +245,135 @@ tr.mun-novo:hover td{background:rgba(20,87,160,.055)}
   .mun-hero{flex-direction:column}
 }
 </style>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  // ══ CONFIGURAÇÃO FIREBASE — Cole suas chaves aqui ══
+  const firebaseConfig = {
+    apiKey: "AIzaSyDQ7478hzu2GIVtaulcF2XZ5bWIeEBKAS8",
+    authDomain: "af-assessoria-portal-ba4fa.firebaseapp.com",
+    projectId: "af-assessoria-portal-ba4fa",
+    storageBucket: "af-assessoria-portal-ba4fa.firebasestorage.app",
+    messagingSenderId: "866955358975",
+    appId: "1:866955358975:web:1135b5c01efe3fd59552ca"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Expõe funções Firebase para o código principal
+  window._fb = { db, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc };
+
+  // Carrega dados do Firestore ao iniciar
+  window._fbCarregar = async function() {
+    try {
+      // Processos
+      const snapProc = await getDocs(collection(db, 'processos'));
+      if(!snapProc.empty) {
+        window._processosFB = snapProc.docs.map(d => ({...d.data(), _fbId: d.id}));
+        console.log('Firebase: ' + window._processosFB.length + ' processos carregados');
+      }
+      // Equipe
+      const snapEq = await getDocs(collection(db, 'equipe'));
+      if(!snapEq.empty) {
+        window._equipeFB = snapEq.docs.map(d => ({...d.data(), _fbId: d.id}));
+      }
+      // Municípios
+      const snapMun = await getDocs(collection(db, 'municipios'));
+      if(!snapMun.empty) {
+        window._municipiosFB = snapMun.docs.map(d => ({...d.data(), _fbId: d.id}));
+      }
+    } catch(e) {
+      console.warn('Firebase offline ou não configurado:', e.message);
+    }
+  };
+
+  // Salvar processo no Firestore
+  window._fbSalvarProcesso = async function(proc) {
+    try {
+      const { _fbId, ...data } = proc;
+      if(_fbId) {
+        await updateDoc(doc(db, 'processos', _fbId), data);
+        return _fbId;
+      } else {
+        const ref = await addDoc(collection(db, 'processos'), data);
+        return ref.id;
+      }
+    } catch(e) { console.warn('Erro ao salvar processo:', e); return null; }
+  };
+
+  // Salvar equipe no Firestore
+  window._fbSalvarEquipe = async function(membro) {
+    try {
+      const { _fbId, ...data } = membro;
+      if(_fbId) {
+        await updateDoc(doc(db, 'equipe', _fbId), data);
+      } else {
+        const ref = await addDoc(collection(db, 'equipe'), data);
+        membro._fbId = ref.id;
+      }
+    } catch(e) { console.warn('Erro ao salvar equipe:', e); }
+  };
+
+  // Salvar município no Firestore
+  window._fbSalvarMunicipio = async function(mun) {
+    try {
+      const { _fbId, ...data } = mun;
+      if(_fbId) {
+        await updateDoc(doc(db, 'municipios', _fbId), data);
+      } else {
+        const ref = await addDoc(collection(db, 'municipios'), data);
+        mun._fbId = ref.id;
+      }
+    } catch(e) { console.warn('Erro ao salvar municipio:', e); }
+  };
+
+  // Excluir do Firestore
+  window._fbExcluir = async function(colecao, fbId) {
+    try {
+      await deleteDoc(doc(db, colecao, fbId));
+    } catch(e) { console.warn('Erro ao excluir:', e); }
+  };
+
+  // Migrar dados locais para Firebase (primeira vez)
+  window._fbMigrar = async function(processos, equipe, municipios) {
+    console.log('Iniciando migração para Firebase...');
+    for(const p of processos) {
+      const { _fbId, ...data } = p;
+      const ref = await addDoc(collection(db, 'processos'), data);
+      p._fbId = ref.id;
+    }
+    for(const a of equipe) {
+      const { _fbId, ...data } = a;
+      const ref = await addDoc(collection(db, 'equipe'), data);
+      a._fbId = ref.id;
+    }
+    for(const m of municipios) {
+      const { _fbId, ...data } = m;
+      const ref = await addDoc(collection(db, 'municipios'), data);
+      m._fbId = ref.id;
+    }
+    console.log('Migração concluída!');
+    alert('Dados migrados para o Firebase com sucesso! Os dados agora ficam salvos permanentemente.');
+  };
+
+  // Inicializa após carregar a página
+  window.addEventListener('DOMContentLoaded', async function() {
+    await window._fbCarregar();
+    // Se Firebase tem dados, substitui os locais
+    if(window._processosFB && window._processosFB.length > 0) {
+      processos = window._processosFB;
+    }
+    if(window._equipeFB && window._equipeFB.length > 0) {
+      EQUIPE = window._equipeFB;
+    }
+    if(window._municipiosFB && window._municipiosFB.length > 0) {
+      MUNICIPIOS = window._municipiosFB;
+    }
+  });
+</script>
 </head>
 <body>
 
@@ -767,6 +896,14 @@ function rMunicipios(c) {
 function rAdmin(c) {
   c.innerHTML=`<div style="margin-bottom:18px"><h2 style="font-size:17px;font-weight:600">⚙ Administração do sistema</h2><p style="font-size:13px;color:var(--gt);margin-top:4px">Gerencie servidores, municípios e senhas de acesso</p></div>
 
+  <div class="admin-card" style="border:2px solid #0F6E56">
+    <h4 style="color:#0F6E56">🔥 Firebase — Banco de dados permanente</h4>
+    <p>Migre todos os dados para o Firebase para que fiquem salvos permanentemente. Faça isso uma única vez após configurar as chaves.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-v btn-sm" onclick="migrarFirebase()">▲ Migrar dados para o Firebase</button>
+      <button class="btn btn-o btn-sm" onclick="verificarFirebase()">✓ Verificar conexão</button>
+    </div>
+  </div>
   <div class="admin-card">
     <h4>Servidores do escritório</h4>
     <p>Adicione, edite ou remova membros da equipe e defina suas funções e senhas.</p>
@@ -987,6 +1124,7 @@ function salvarServidor() {
   } else {
     EQUIPE.push({id:Date.now(),nome,email,senha,role,cor,ct,ini,cargo});
   }
+  if(window._fbSalvarEquipe) window._fbSalvarEquipe(editServId ? EQUIPE[EQUIPE.findIndex(x=>x.id===editServId)] : EQUIPE[EQUIPE.length-1]);
   fm('m-servidor'); preencherSelects(); renderMain();
   notif('Servidor '+(editServId?'atualizado':'cadastrado')+' com sucesso.','ok');
 }
@@ -1040,6 +1178,7 @@ function salvarMunicipio() {
   } else {
     MUNICIPIOS.push({id:Date.now(),nome,senha,adv,iss,contrato,obs});
   }
+  if(window._fbSalvarMunicipio) window._fbSalvarMunicipio(editMunId ? MUNICIPIOS[MUNICIPIOS.findIndex(x=>x.id===editMunId)] : MUNICIPIOS[MUNICIPIOS.length-1]);
   fm('m-municipio'); preencherSelects(); renderMain();
   notif('Município '+(editMunId?'atualizado':'cadastrado')+' com sucesso.','ok');
 }
@@ -1075,11 +1214,13 @@ function alterarSenha() {
 function avancar() {
   const p=pDet; if(!p) return;
   const idx=STATUS.indexOf(p.status);
-  if(idx<STATUS.length-1){ p.status=STATUS[idx+1]; p.hist.push({ev:'Status: '+p.status,d:hj(),u:usuario.nome}); fm('m-det-adv'); renderMain(); notif('Status: "'+p.status+'".','ok'); }
+  if(idx<STATUS.length-1){ p.status=STATUS[idx+1]; p.hist.push({ev:'Status: '+p.status,d:hj(),u:usuario.nome}); if(window._fbSalvarProcesso) window._fbSalvarProcesso(p);
+  fm('m-det-adv'); renderMain(); notif('Status: "'+p.status+'".','ok'); }
 }
 function salvPar() {
   const t=document.getElementById('par-txt')?.value; if(!t||!pDet) return;
   pDet.parecer=t; pDet.hist.push({ev:'Parecer registrado',d:hj(),u:usuario.nome});
+  if(window._fbSalvarProcesso) window._fbSalvarProcesso(pDet);
   notif('Parecer salvo.','ok');
 }
 function addHist() {
@@ -1112,7 +1253,9 @@ function abrirNovoAdv() {
 function salvarAdv() {
   const num=document.getElementById('na-num').value||'PAT-XXX';
   processos.unshift({id:Date.now(),num,municipio:document.getElementById('na-mun').value||'N/I',assunto:document.getElementById('na-ass').value||'Sem assunto',tipo:document.getElementById('na-tipo').value,tributo:document.getElementById('na-trib').value,adv:document.getElementById('na-adv').value,prio:document.getElementById('na-prio').value,status:'Recebido',data:(document.getElementById('na-data').value||'').split('-').reverse().join('/'),prazo:(document.getElementById('na-prazo').value||'').split('-').reverse().join('/'),valor:document.getElementById('na-valor').value||'—',obs:document.getElementById('na-obs').value,parecer:'',docs:[...filsAdv],msgs:[],origem:'interno',hist:[{ev:'Cadastrado pelo escritório',d:hj(),u:usuario.nome}]});
-  fm('m-novo-adv'); renderMain(); notif('Processo cadastrado.','ok');
+  fm('m-novo-adv'); 
+  if(window._fbSalvarProcesso) window._fbSalvarProcesso(processos[0]).then(id=>{ if(id) processos[0]._fbId=id; });
+  renderMain(); notif('Processo cadastrado e salvo.','ok');
 }
 function salvarMun() {
   const ass=document.getElementById('mn-ass').value.trim(); if(!ass){ notif('Informe o assunto.','warn'); return; }
@@ -1121,6 +1264,7 @@ function salvarMun() {
   processos.unshift({id:Date.now(),num,municipio:usuario.nome,assunto:ass,tipo:document.getElementById('mn-tipo').value,tributo:document.getElementById('mn-trib').value,adv:m.adv,prio:document.getElementById('mn-urg').value==='Normal'?'Baixa':'Alta',status:'Recebido',data:hj(),prazo:'',valor:document.getElementById('mn-valor').value||'—',obs:document.getElementById('mn-desc').value,parecer:'',docs:[...filsMun],msgs:[],origem:'municipio',hist:[{ev:'Enviado pelo portal',d:hj(),u:usuario.nome}]});
   fm('m-novo-mun');['mn-ass','mn-desc','mn-valor'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fl-mun').innerHTML=''; filsMun=[];
+  if(window._fbSalvarProcesso) window._fbSalvarProcesso(processos[0]).then(id=>{ if(id) processos[0]._fbId=id; });
   renderMain(); notif('Processo enviado! O escritório receberá em instantes.','ok');
 }
 function addArqs(files,ctx) {
@@ -1144,6 +1288,15 @@ function agora(){return new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',mi
 function fm(id){document.getElementById(id).classList.remove('open')}
 function aba(el,id){el.closest('.tab-bar').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');el.closest('.modal').querySelectorAll('[id^="da-"],[id^="dm-"]').forEach(e=>e.style.display='none');document.getElementById(id).style.display='';}
 function resetAbas(mid,abas){const m=document.getElementById(mid);m.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));abas.forEach((id,i)=>{const e=document.getElementById(id);if(e)e.style.display=i===0?'':'none'});}
+function migrarFirebase(){
+  if(!window._fbMigrar){ notif('Firebase não configurado. Cole as chaves primeiro.','err'); return; }
+  if(!confirm('Migrar '+processos.length+' processos, '+EQUIPE.length+' advogados e '+MUNICIPIOS.length+' municípios para o Firebase?')) return;
+  window._fbMigrar(processos, EQUIPE, MUNICIPIOS).catch(e => notif('Erro: '+e.message,'err'));
+}
+function verificarFirebase(){
+  if(!window._fb){ notif('Firebase não conectado. Verifique as chaves.','err'); return; }
+  notif('Firebase conectado com sucesso!','ok');
+}
 function notif(msg,tipo='ok'){const el=document.getElementById('notif');el.textContent=msg;el.className='notif '+tipo;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',4200);}
 
 // Preenche o select de municípios na tela de login ao carregar a página
